@@ -86,34 +86,37 @@ public class Calculator extends JFrame {
     }
 
     private void equalOperation() {
-        String text = textField.getText();
-        if (text.contains("+")) {
-            performAddition();
-        } else if (text.contains("-")) {
-            performSubtraction();
+        String input = textField.getText();
+        if (input.contains("+")) {
+            performAddition(input);
+        } else if (input.contains("-")) {
+            performSubtraction(input);
+        } else if (input.contains("x")) {
+            performMultiplication(input);
         }
-//        } else if (text.contains("-")) {
-//            performSubtraction();
-//        } else if (text.contains("*")) {
-//            performMultiplication();
-//        } else {
-//            performDivition();
-//        }
     }
 
-    private void performAddition() {
-        String[] numbers = textField.getText().split("\\+");
+    private void performAddition(String input) {
+        String[] numbers = input.split("\\+");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
         textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
     }
 
-    private void performSubtraction() {
-        String[] numbers = textField.getText().split("-");
+    private void performSubtraction(String input) {
+        String[] numbers = input.split("-");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
         textField.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
+    }
+
+    private void performMultiplication(String input) {
+        String[] numbers = input.split("x");
+        int firstNumber = Integer.parseInt(numbers[0]);
+        int secondNumber = Integer.parseInt(numbers[1]);
+
+        textField.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
     }
 }
