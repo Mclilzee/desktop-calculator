@@ -30,7 +30,6 @@ public class Calculator extends JFrame {
         add(createButtonsPanel());
 
         setVisible(true);
-
     }
 
     private JPanel createButtonsPanel() {
@@ -39,7 +38,7 @@ public class Calculator extends JFrame {
         layout.setHgap(20);
         layout.setVgap(20);
         panel.setLayout(layout);
-        panel.setBorder(new EmptyBorder(0,20, 20, 20));
+        panel.setBorder(new EmptyBorder(0, 20, 20, 20));
 
         panel.add(createCalculatorButton("7", "Seven"));
         panel.add(createCalculatorButton("8", "Eight"));
@@ -55,7 +54,7 @@ public class Calculator extends JFrame {
         panel.add(createCalculatorButton("+", "Add"));
         panel.add(Box.createGlue());
         panel.add(createCalculatorButton("0", "Zero"));
-        panel.add(createCalculatorButton("=", "Equals"));
+        panel.add(createEqualButton());
         panel.add(createCalculatorButton("-", "Subtract"));
         return panel;
     }
@@ -69,8 +68,42 @@ public class Calculator extends JFrame {
 
     private void attachActionListenerToButton(JButton button) {
         button.addActionListener(e -> {
-            String fieldText = textField.getText();
-            textField.setText(fieldText + button.getText());
+            String buttonType = button.getText();
+            String text = textField.getText();
+            if (!buttonType.matches("\\d") && text.contains(buttonType)) {
+                return;
+            }
+            textField.setText(text + buttonType);
         });
+    }
+
+    private JButton createEqualButton() {
+        JButton button = new JButton("=");
+        button.setName("Equals");
+        button.addActionListener(e -> equalOperation());
+
+        return button;
+    }
+
+    private void equalOperation() {
+        String text = textField.getText();
+        if (text.contains("+")) {
+            performAddition();
+        }
+//        } else if (text.contains("-")) {
+//            performSubtraction();
+//        } else if (text.contains("*")) {
+//            performMultiplication();
+//        } else {
+//            performDivition();
+//        }
+    }
+
+    private void performAddition() {
+        String[] numbers = textField.getText().split("\\+");
+        int firstNumber = Integer.parseInt(numbers[0]);
+        int secondNumber = Integer.parseInt(numbers[1]);
+
+        textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
     }
 }
