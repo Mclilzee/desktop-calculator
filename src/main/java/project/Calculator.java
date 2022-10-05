@@ -93,6 +93,8 @@ public class Calculator extends JFrame {
             performSubtraction(input);
         } else if (input.contains("x")) {
             performMultiplication(input);
+        } else if (input.contains("/")) {
+            performDivision(input);
         }
     }
 
@@ -118,5 +120,18 @@ public class Calculator extends JFrame {
         int secondNumber = Integer.parseInt(numbers[1]);
 
         textField.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
+    }
+
+    private void performDivision(String input) {
+        String[] numbers = input.split("/");
+        int firstNumber = Integer.parseInt(numbers[0]);
+        int secondNumber = Integer.parseInt(numbers[1]);
+
+        if (secondNumber == 0) {
+            textField.setText("Division by Zero!");
+        } else {
+            textField.setText(String.format("%d/%d = %d", firstNumber, secondNumber, firstNumber / secondNumber));
+        }
+
     }
 }
