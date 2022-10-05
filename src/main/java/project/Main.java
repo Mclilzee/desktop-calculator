@@ -2,6 +2,6 @@ package project;
 
 public class Main {
     public static void main(String[] args) {
-        new CalculatorFrame("Calculator");
+        new Calculator("Calculator");
     }
 }

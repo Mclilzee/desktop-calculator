@@ -3,9 +3,9 @@ package project;
 import javax.swing.*;
 import java.awt.*;
 
-public class CalculatorFrame extends JFrame {
+public class Calculator extends JFrame {
 
-    public CalculatorFrame(String title) {
+    public Calculator(String title) {
         super(title);
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
