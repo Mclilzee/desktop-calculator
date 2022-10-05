@@ -89,6 +89,8 @@ public class Calculator extends JFrame {
         String text = textField.getText();
         if (text.contains("+")) {
             performAddition();
+        } else if (text.contains("-")) {
+            performSubtraction();
         }
 //        } else if (text.contains("-")) {
 //            performSubtraction();
@@ -105,5 +107,13 @@ public class Calculator extends JFrame {
         int secondNumber = Integer.parseInt(numbers[1]);
 
         textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
+    }
+
+    private void performSubtraction() {
+        String[] numbers = textField.getText().split("-");
+        int firstNumber = Integer.parseInt(numbers[0]);
+        int secondNumber = Integer.parseInt(numbers[1]);
+
+        textField.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
     }
 }
