@@ -1,23 +1,30 @@
 package project;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static java.awt.Component.CENTER_ALIGNMENT;
+public class CalculatorScreen extends JPanel {
 
-public abstract class CalculatorScreen {
+    private final static JTextField textField;
 
-    private static final JTextField textField;
+    public CalculatorScreen(Dimension dimension) {
+        setLayout(new BorderLayout());
+        setBorder(new EmptyBorder(10, 20, 10, 20));
+        setMaximumSize(dimension);
+
+        add(textField, BorderLayout.CENTER);
+    }
+
+    public CalculatorScreen(int width, int height) {
+        this(new Dimension(width, height));
+    }
 
     static {
         textField = new JTextField();
         textField.setName("EquationTextField");
         textField.setAlignmentX(CENTER_ALIGNMENT);
         textField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
-    }
-
-    static JTextField getTextField() {
-        return textField;
     }
 
     static void buttonPress(String buttonType) {
@@ -35,7 +42,7 @@ public abstract class CalculatorScreen {
         }
 
         String lastChar = textFieldString.substring(textFieldString.length() - 1);
-        return !lastChar.matches("\\d");
+        return lastChar.matches("\\d");
     }
 
     private static void performEqualsOperation() {
