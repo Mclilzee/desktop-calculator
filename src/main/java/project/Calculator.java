@@ -6,8 +6,6 @@ import java.awt.*;
 
 public class Calculator extends JFrame {
 
-    private final JTextField textField;
-
     public Calculator(String title) {
         super(title);
         setSize(400, 400);
@@ -19,12 +17,9 @@ public class Calculator extends JFrame {
         panel.setBorder(new EmptyBorder(10, 20, 10, 20));
         panel.setMaximumSize(new Dimension(getWidth(), 50));
 
-        textField = new JTextField();
-        textField.setName("EquationTextField");
-        textField.setAlignmentX(CENTER_ALIGNMENT);
-        textField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
 
-        panel.add(textField, BorderLayout.CENTER);
+
+        panel.add(CalculatorScreen.getTextField(), BorderLayout.CENTER);
 
         add(panel);
         add(createButtonsPanel());
@@ -75,63 +70,5 @@ public class Calculator extends JFrame {
             }
             textField.setText(text + buttonType);
         });
-    }
-
-    private JButton createEqualButton() {
-        JButton button = new JButton("=");
-        button.setName("Equals");
-        button.addActionListener(e -> equalOperation());
-
-        return button;
-    }
-
-    private void equalOperation() {
-        String input = textField.getText();
-        if (input.contains("+")) {
-            performAddition(input);
-        } else if (input.contains("-")) {
-            performSubtraction(input);
-        } else if (input.contains("x")) {
-            performMultiplication(input);
-        } else if (input.contains("/")) {
-            performDivision(input);
-        }
-    }
-
-    private void performAddition(String input) {
-        String[] numbers = input.split("\\+");
-        int firstNumber = Integer.parseInt(numbers[0]);
-        int secondNumber = Integer.parseInt(numbers[1]);
-
-        textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
-    }
-
-    private void performSubtraction(String input) {
-        String[] numbers = input.split("-");
-        int firstNumber = Integer.parseInt(numbers[0]);
-        int secondNumber = Integer.parseInt(numbers[1]);
-
-        textField.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
-    }
-
-    private void performMultiplication(String input) {
-        String[] numbers = input.split("x");
-        int firstNumber = Integer.parseInt(numbers[0]);
-        int secondNumber = Integer.parseInt(numbers[1]);
-
-        textField.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
-    }
-
-    private void performDivision(String input) {
-        String[] numbers = input.split("/");
-        int firstNumber = Integer.parseInt(numbers[0]);
-        int secondNumber = Integer.parseInt(numbers[1]);
-
-        if (secondNumber == 0) {
-            textField.setText("Division by Zero!");
-        } else {
-            textField.setText(String.format("%d/%d = %d", firstNumber, secondNumber, firstNumber / secondNumber));
-        }
-
     }
 }
