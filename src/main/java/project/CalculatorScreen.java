@@ -21,26 +21,24 @@ public abstract class CalculatorScreen {
     }
 
     static void buttonPress(String buttonType) {
-        String textFieldString = textField.getText();
-        int length = textFieldString.length();
-
-        if (length == 0) {
-            return;
-        }
-
-        if (buttonType.matches("\\d") || previousCharIsNumeric()) {
-            textField.setText(textFieldString + buttonType);
+        if (buttonType.equals("=")) {
+            performEqualsOperation();
+        } else if (buttonType.matches("\\d") || previousCharIsNumericOrEmpty()) {
+            textField.setText(textField.getText() + buttonType);
         }
     }
 
-    private static boolean previousCharIsNumeric() {
+    private static boolean previousCharIsNumericOrEmpty() {
         String textFieldString = textField.getText();
-        String lastChar = textFieldString.substring(textFieldString.length() - 1);
+        if (textFieldString.isBlank()) {
+            return true;
+        }
 
+        String lastChar = textFieldString.substring(textFieldString.length() - 1);
         return !lastChar.matches("\\d");
     }
 
-    static void equalOperation() {
+    private static void performEqualsOperation() {
         if (textField.getText().contains("+")) {
             performAddition();
         } else if (textField.getText().contains("-")) {
@@ -52,7 +50,7 @@ public abstract class CalculatorScreen {
         }
     }
 
-    static void performAddition() {
+    private static void performAddition() {
         String[] numbers = textField.getText().split("\\+");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
@@ -60,7 +58,7 @@ public abstract class CalculatorScreen {
         textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
     }
 
-    static void performSubtraction() {
+    private static void performSubtraction() {
         String[] numbers = textField.getText().split("-");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
@@ -68,7 +66,7 @@ public abstract class CalculatorScreen {
         textField.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
     }
 
-    static void performMultiplication() {
+    private static void performMultiplication() {
         String[] numbers = textField.getText().split("x");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
@@ -76,7 +74,7 @@ public abstract class CalculatorScreen {
         textField.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
     }
 
-    static void performDivision() {
+    private static void performDivision() {
         String[] numbers = textField.getText().split("/");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
