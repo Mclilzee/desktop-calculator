@@ -39,15 +39,32 @@ public final class CalculatorScreen {
     }
 
     private static void performEqualsOperation() {
-        if (textField.getText().contains("+")) {
+        String text = textField.getText();
+        if (!text.isEmpty()) {
+            addMissingValues(text);
+        }
+
+        if (text.contains("+")) {
             performAddition();
-        } else if (textField.getText().contains("-")) {
+        } else if (text.contains("-")) {
             performSubtraction();
-        } else if (textField.getText().contains("x")) {
+        } else if (text.contains("x")) {
             performMultiplication();
-        } else if (textField.getText().contains("/")) {
+        } else if (text.contains("/")) {
             performDivision();
         }
+    }
+
+    private static void addMissingValues(String text) {
+        if (!String.valueOf(text.charAt(0)).matches("\\d")) {
+            text = "0" + text;
+        }
+
+        if (!String.valueOf(text.charAt(text.length() - 1)).matches("\\d")) {
+            text += "0";
+        }
+
+        textField.setText(text);
     }
 
     private static void performAddition() {
