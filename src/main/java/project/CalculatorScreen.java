@@ -1,30 +1,20 @@
 package project;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class CalculatorScreen extends JPanel {
+public abstract class CalculatorScreen {
 
     private final static JTextField textField;
 
-    public CalculatorScreen(Dimension dimension) {
-        setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(10, 20, 10, 20));
-        setMaximumSize(dimension);
-
-        add(textField, BorderLayout.CENTER);
-    }
-
-    public CalculatorScreen(int width, int height) {
-        this(new Dimension(width, height));
+    public static JTextField getTextField() {
+        return textField;
     }
 
     static {
         textField = new JTextField();
         textField.setName("EquationTextField");
-        textField.setAlignmentX(CENTER_ALIGNMENT);
-        textField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 25));
+        textField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
     }
 
     static void buttonPress(String buttonType) {

@@ -8,13 +8,17 @@ public class Calculator extends JFrame {
 
     public Calculator(String title) {
         super(title);
-        setSize(400, 400);
+        setSize(300, 400);
         setResizable(false);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        add(new CalculatorScreen(getWidth(), 100));
-        add(new CalculatorButtonsPanel());
 
+        JPanel panel = new JPanel(new BorderLayout(20, 15));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.add(CalculatorScreen.getTextField(), BorderLayout.NORTH);
+        panel.add(new CalculatorButtonsPanel(), BorderLayout.CENTER);
+
+        add(panel);
         setVisible(true);
     }
 }

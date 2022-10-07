@@ -7,11 +7,8 @@ import java.awt.*;
 public class CalculatorButtonsPanel extends JPanel {
     
     public CalculatorButtonsPanel() {
-        GridLayout layout = new GridLayout(4, 4);
-        layout.setHgap(20);
-        layout.setVgap(20);
+        GridLayout layout = new GridLayout(4, 4, 10, 10);
         setLayout(layout);
-        setBorder(new EmptyBorder(0, 20, 20, 20));
 
         add(new CalculatorButton("7", "Seven"));
         add(new CalculatorButton("8", "Eight"));
