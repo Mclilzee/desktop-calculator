@@ -3,9 +3,12 @@ package project;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class CalculatorScreen {
+public final class CalculatorScreen {
 
     private final static JTextField textField;
+
+    // Class does not need instances
+    private CalculatorScreen() {}
 
     public static JTextField getTextField() {
         return textField;
@@ -77,7 +80,7 @@ public abstract class CalculatorScreen {
         int secondNumber = Integer.parseInt(numbers[1]);
 
         if (secondNumber == 0) {
-            textField.setText("Division by Zero!");
+            textField.setText("Error!");
         } else {
             textField.setText(String.format("%d/%d = %d", firstNumber, secondNumber, firstNumber / secondNumber));
         }
