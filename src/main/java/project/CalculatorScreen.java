@@ -28,13 +28,15 @@ public final class CalculatorScreen {
 
         resultLabel = new JLabel();
         resultLabel.setName("ResultLabel");
-        resultLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+        resultLabel.setFont(new Font(Font.SERIF, Font.BOLD, 50));
         resultLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         resultLabel.setText("0");
 
         equationLabel = new JLabel();
         equationLabel.setName("EquationLabel");
         equationLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+        equationLabel.setForeground(Color.decode("#00b135"));
+        equationLabel.setPreferredSize(new Dimension(0, 20));
         equationLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         panel.add(resultLabel);
