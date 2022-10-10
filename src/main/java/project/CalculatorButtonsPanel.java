@@ -1,7 +1,6 @@
 package project;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class CalculatorButtonsPanel extends JPanel {
@@ -9,6 +8,7 @@ public class CalculatorButtonsPanel extends JPanel {
     public CalculatorButtonsPanel() {
         GridLayout layout = new GridLayout(5, 4, 10, 10);
         setLayout(layout);
+        setAlignmentX(RIGHT_ALIGNMENT);
 
         add(Box.createGlue());
         add(Box.createGlue());

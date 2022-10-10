@@ -13,10 +13,12 @@ public class Calculator extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel(new BorderLayout(20, 15));
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        panel.add(CalculatorScreen.getTextField(), BorderLayout.NORTH);
-        panel.add(new CalculatorButtonsPanel(), BorderLayout.CENTER);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panel.add(CalculatorScreen.getPanel(), BorderLayout.NORTH);
+        panel.add(new CalculatorButtonsPanel(), BorderLayout.SOUTH);
 
         add(panel);
         setVisible(true);

@@ -1,35 +1,54 @@
 package project;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public final class CalculatorScreen {
 
-    private final static JTextField textField;
+    private final static JPanel panel;
+    private final static JLabel resultLabel;
+    private final static JLabel equationLabel;
 
     // Class does not need instances
     private CalculatorScreen() {}
 
-    public static JTextField getTextField() {
-        return textField;
+    public static JPanel getPanel() {
+        return panel;
     }
 
     static {
-        textField = new JTextField();
-        textField.setName("EquationTextField");
-        textField.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panel.setBorder(new EmptyBorder(0, 0, 20, 0));
+
+        resultLabel = new JLabel();
+        resultLabel.setName("ResultLabel");
+        resultLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+        resultLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        resultLabel.setText("0");
+
+        equationLabel = new JLabel();
+        equationLabel.setName("EquationLabel");
+        equationLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
+        equationLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        equationLabel.setText("2+2");
+
+        panel.add(resultLabel);
+        panel.add(equationLabel);
     }
 
     static void buttonPress(String buttonType) {
         if (buttonType.equals("=")) {
             performEqualsOperation();
         } else if (buttonType.matches("\\d") || previousCharIsNumericOrEmpty()) {
-            textField.setText(textField.getText() + buttonType);
+            resultLabel.setText(resultLabel.getText() + buttonType);
         }
     }
 
     private static boolean previousCharIsNumericOrEmpty() {
-        String textFieldString = textField.getText();
+        String textFieldString = resultLabel.getText();
         if (textFieldString.isBlank()) {
             return true;
         }
@@ -39,7 +58,7 @@ public final class CalculatorScreen {
     }
 
     private static void performEqualsOperation() {
-        String text = textField.getText();
+        String text = resultLabel.getText();
         if (!text.isEmpty()) {
             addMissingValues(text);
         }
@@ -64,42 +83,42 @@ public final class CalculatorScreen {
             text += "0";
         }
 
-        textField.setText(text);
+        resultLabel.setText(text);
     }
 
     private static void performAddition() {
-        String[] numbers = textField.getText().split("\\+");
+        String[] numbers = resultLabel.getText().split("\\+");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
-        textField.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
+        resultLabel.setText(String.format("%d+%d = %d", firstNumber, secondNumber, firstNumber + secondNumber));
     }
 
     private static void performSubtraction() {
-        String[] numbers = textField.getText().split("-");
+        String[] numbers = resultLabel.getText().split("-");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
-        textField.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
+        resultLabel.setText(String.format("%d-%d = %d", firstNumber, secondNumber, firstNumber - secondNumber));
     }
 
     private static void performMultiplication() {
-        String[] numbers = textField.getText().split("x");
+        String[] numbers = resultLabel.getText().split("x");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
-        textField.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
+        resultLabel.setText(String.format("%dx%d = %d", firstNumber, secondNumber, firstNumber * secondNumber));
     }
 
     private static void performDivision() {
-        String[] numbers = textField.getText().split("/");
+        String[] numbers = resultLabel.getText().split("/");
         int firstNumber = Integer.parseInt(numbers[0]);
         int secondNumber = Integer.parseInt(numbers[1]);
 
         if (secondNumber == 0) {
-            textField.setText("Error!");
+            resultLabel.setText("Error!");
         } else {
-            textField.setText(String.format("%d/%d = %d", firstNumber, secondNumber, firstNumber / secondNumber));
+            resultLabel.setText(String.format("%d/%d = %d", firstNumber, secondNumber, firstNumber / secondNumber));
         }
     }
 }
