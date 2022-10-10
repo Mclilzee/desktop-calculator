@@ -8,7 +8,7 @@ public class Calculator extends JFrame {
 
     public Calculator(String title) {
         super(title);
-        setSize(300, 400);
+        setSize(400, 500);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
