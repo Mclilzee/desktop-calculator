@@ -4,10 +4,10 @@ import javax.swing.*;
 
 public class CalculatorButton extends JButton {
 
-    public CalculatorButton(String text, String name) {
+    public CalculatorButton(String text, String name, ButtonType type) {
         super(text);
         this.setName(name);
         setFocusPainted(false);
-        addActionListener(e -> CalculatorScreen.buttonPress(getText()));
+        addActionListener(e -> CalculatorScreen.buttonPress(type, getText()));
     }
 }
