@@ -33,7 +33,7 @@ public class LogicProcessor {
             case DELETE -> numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             case EQUALS -> performEquation();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
-            default -> numberBuilder.append(type.VALUE);
+            default -> addNumber(type);
         }
 
         setEquationScreenFromStack();
@@ -44,10 +44,30 @@ public class LogicProcessor {
         equationScreen.setText(numberBuilder.toString());
     }
 
+    private void addNumber(ButtonType type) {
+        if (type == ButtonType.ZERO) {
+            addZero();
+        } else if (type == ButtonType.DOT) {
+            addDot();
+        } else {
+            numberBuilder.append(type.VALUE);
+        }
+    }
+
+    private void addZero() {
+
+    }
+
+    private void addDot() {
+        if (!numberBuilder.toString().contains(".")) {
+            numberBuilder.append(".");
+        }
+    }
+
     private void addOperator(ButtonType type) {
         if (!operationStack.isEmpty() && numberBuilder.isEmpty()) {
             return;
-        } else if (numberBuilder.isEmpty()) {
+        } else if (numberBuilder.isEmpty() || numberBuilder.toString().endsWith(".")) {
             numberBuilder.append("0");
         }
 
