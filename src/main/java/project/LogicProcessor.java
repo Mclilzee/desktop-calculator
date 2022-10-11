@@ -137,7 +137,7 @@ public class LogicProcessor {
     }
 
     private void deleteLastCharacter() {
-        if (!operationStack.isEmpty() && !isNumber(operationStack.peek())) {
+        if (!operationStack.isEmpty()) {
             String lastElement = operationStack.pop();
 
             if (isNumber(lastElement)) {
