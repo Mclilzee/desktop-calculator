@@ -45,13 +45,15 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
+        if (!operationStack.isEmpty() && numberBuilder.isEmpty()) {
+            return;
+        } else if (numberBuilder.isEmpty()) {
             numberBuilder.append("0");
-        } else if (!numberBuilder.isEmpty()) {
-            operationStack.push(numberBuilder.toString());
-            operationStack.push(type.VALUE);
-            numberBuilder.setLength(0);
         }
+
+        operationStack.push(numberBuilder.toString());
+        operationStack.push(type.VALUE);
+        numberBuilder.setLength(0);
     }
 
     private boolean isOperator(String text) {
