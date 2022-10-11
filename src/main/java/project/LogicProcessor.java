@@ -62,7 +62,7 @@ public class LogicProcessor {
     }
 
     private void addNumber(ButtonType type) {
-        if (!operationStack.isEmpty() && !isOperator(operationStack.peek())) {
+        if (!operationStack.isEmpty() && isNumber(operationStack.peek())) {
             operationStack.push(ButtonType.ADD.VALUE);
         }
 
@@ -125,8 +125,8 @@ public class LogicProcessor {
         }
     }
 
-    private boolean isOperator(String text) {
-        return text.length() == 1 && !text.matches("^\\d");
+    private boolean isNumber(String text) {
+        return text.length() != 1 || text.matches("^\\d");
     }
 
     private void deleteLastCharacter() {
@@ -134,7 +134,7 @@ public class LogicProcessor {
         if (numberBuilder.isEmpty() && !operationStack.isEmpty()) {
             String lastElement = operationStack.pop();
 
-            if (!isOperator(lastElement)) {
+            if (isNumber(lastElement)) {
                 numberBuilder.append(lastElement);
             }
         }
@@ -157,14 +157,15 @@ public class LogicProcessor {
     }
 
     private class ProcessorWorker extends SwingWorker<String, Object> {
+        private final Deque<String> operators = new ArrayDeque<>();
+        private final Deque<String> postfixStack = new ArrayDeque<>();
 
         @Override
         protected String doInBackground() throws Exception {
-            Deque<String> operators = new ArrayDeque<>();
-            Deque<String> postfixStack = new ArrayDeque<>();
+
             while (!operationStack.isEmpty()) {
                 String item = operationStack.pop();
-                if (isOperator(item)) {
+                if (isNumber(item)) {
                 }
             }
 
