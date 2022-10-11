@@ -38,7 +38,7 @@ public class CalculatorButtonsPanel extends JPanel {
     private class CalculatorButton extends JButton {
 
         public CalculatorButton(ButtonType type) {
-            super(type.getValue());
+            super(type.VALUE);
             setName(type.name());
             setFocusPainted(false);
             addActionListener(e -> processor.buttonPress(type));

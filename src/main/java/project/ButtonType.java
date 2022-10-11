@@ -20,14 +20,10 @@ public enum ButtonType {
     CLEAR("C"),
     DELETE("Del");
 
-    private final String value;
+    public final String VALUE;
 
     ButtonType(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
+        this.VALUE = value;
     }
 
     @Override
