@@ -10,7 +10,7 @@ public class LogicProcessor {
     private final JLabel equationScreen;
     private final Deque<String> operationStack;
     private final Deque<String> postfixStack;
-    private StringBuilder builder;
+    private final StringBuilder numberBuilder;
 
     public LogicProcessor(CalculatorScreen screen) {
         this.resultScreen = screen.getResultLabel();
@@ -18,7 +18,7 @@ public class LogicProcessor {
         this.operationStack = new ArrayDeque<>();
         this.postfixStack = new ArrayDeque<>();
 
-        this.builder = new StringBuilder();
+        this.numberBuilder = new StringBuilder();
     }
 
     public void buttonPress(ButtonType type) {
@@ -27,39 +27,48 @@ public class LogicProcessor {
             case CLEAR -> {
                 equationScreen.setText("");
                 resultScreen.setText("0");
-                builder = new StringBuilder();
+                numberBuilder.setLength(0);
             }
-            case DELETE -> builder.deleteCharAt(builder.length() - 1);
+            case DELETE -> numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             case EQUALS -> performEquation();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
-            default -> builder.append(type.VALUE);
+            default -> numberBuilder.append(type.VALUE);
         }
+
+
+        setEquationScreenFromStack();
     }
 
     private void performEquation() {
-        resultScreen.setText(builder.toString());
-        equationScreen.setText(builder.toString());
+        resultScreen.setText(numberBuilder.toString());
+        equationScreen.setText(numberBuilder.toString());
     }
 
     private void addOperator(ButtonType type) {
         if (!operationStack.isEmpty() && isOperator(operationStack.peek())) {
             return;
-        } else if (operationStack.isEmpty()) {
-            operationStack.push("0");
         }
 
-        operationStack.push(builder.toString());
+        if (numberBuilder.isEmpty()) {
+            numberBuilder.append("0");
+        }
+
+        operationStack.push(numberBuilder.toString());
         operationStack.push(type.VALUE);
-        builder = new StringBuilder();
-        appendToEquationScreen(type);
+        numberBuilder.setLength(0);
     }
 
     private boolean isOperator(String text) {
-        return !text.matches("\\d+");
+        return text.length() == 1 && !text.matches("^\\d");
     }
 
-    private void appendToEquationScreen(ButtonType type) {
-        String text = equationScreen.getText();
-        equationScreen.setText(text + type.VALUE);
+    private void setEquationScreenFromStack() {
+        StringBuilder equationBuilder = new StringBuilder();
+        for (String text : operationStack) {
+            equationBuilder.append(text);
+        }
+
+        equationBuilder.append(numberBuilder.toString());
+        equationScreen.setText(equationBuilder.toString());
     }
 }
