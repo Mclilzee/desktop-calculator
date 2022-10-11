@@ -30,7 +30,7 @@ public class LogicProcessor {
                 numberBuilder.setLength(0);
                 operationStack.clear();
             }
-            case DELETE -> numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+            case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> addNumber(type);
@@ -95,6 +95,15 @@ public class LogicProcessor {
 
     private boolean isOperator(String text) {
         return text.length() == 1 && !text.matches("^\\d");
+    }
+
+    private void deleteLastCharacter() {
+        // if numberBuilder is empty then last operation is an operator, remove from stack
+        if (numberBuilder.isEmpty()) {
+            operationStack.pop();
+        } else {
+            numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+        }
     }
 
     private void setEquationScreenFromStack() {
