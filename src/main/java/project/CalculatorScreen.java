@@ -31,11 +31,11 @@ public final class CalculatorScreen extends JPanel {
         add(equationLabel);
     }
 
-    public void setResultLabelText(String text) {
-        this.resultLabel.setText(text);
+    public JLabel getEquationLabel() {
+        return equationLabel;
     }
 
-    public void setEquationLabelText(String text) {
-        this.equationLabel.setText(text);
+    public JLabel getResultLabel() {
+        return resultLabel;
     }
 }
