@@ -1,6 +1,9 @@
 package project;
 
 import javax.swing.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.InvalidParameterException;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ExecutionException;
@@ -37,6 +40,7 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
+        // if builder is empty, then last operation is operator or operationStack is empty;
         if (numberBuilder.isEmpty()) {
             addZero();
         }
@@ -158,19 +162,64 @@ public class LogicProcessor {
 
     private class ProcessorWorker extends SwingWorker<String, Object> {
         private final Deque<String> operators = new ArrayDeque<>();
-        private final Deque<String> postfixStack = new ArrayDeque<>();
+        private final Deque<BigDecimal> postfixStack = new ArrayDeque<>();
 
         @Override
-        protected String doInBackground() throws Exception {
+        protected String doInBackground() {
 
             while (!operationStack.isEmpty()) {
-                String item = operationStack.pop();
-                if (isNumber(item)) {
+                String element = operationStack.pop();
+                if (isNumber(element)) {
+                    postfixStack.push(new BigDecimal(element));
+                } else {
+                    performOperatorInsertion(element);
                 }
             }
 
-            operationStack.push(postfixStack.pop());
+            operationStack.push(postfixStack.pop().toString());
             return operationStack.peek();
+        }
+
+        private void performOperatorInsertion(String element) {
+            if (postfixStack.size() < 2) {
+                operators.push(element);
+            } else {
+                performPrecedenceInsertion(element);
+            }
+        }
+
+        private void performPrecedenceInsertion(String element) {
+            ButtonType type = getButtonType(element);
+            ButtonType previousType = getButtonType(operators.peek());
+
+            if (type.PRECEDENCE < previousType.PRECEDENCE) {
+                performCalculation();
+            }
+
+            operators.push(type.VALUE);
+        }
+
+        private void performCalculation() {
+            BigDecimal firstNumber = postfixStack.pop();
+            BigDecimal secondNumber = postfixStack.pop();
+            ButtonType operatorType = getButtonType(operators.pop());
+
+            switch (operatorType) {
+                case ADD -> postfixStack.push(firstNumber.add(secondNumber));
+                case SUBTRACT -> postfixStack.push(firstNumber.subtract(secondNumber));
+                case MULTIPLY -> postfixStack.push(firstNumber.multiply(secondNumber));
+                case DIVIDE -> postfixStack.push(firstNumber.divide(secondNumber, 20, RoundingMode.CEILING));
+            }
+        }
+
+        private ButtonType getButtonType(String element) {
+            for (ButtonType type : ButtonType.values()) {
+                if (type.VALUE.equals(element)) {
+                    return type;
+                }
+            }
+
+            throw new InvalidParameterException();
         }
 
         @Override
