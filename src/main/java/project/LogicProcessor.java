@@ -37,10 +37,9 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
-        if (numberBuilder.isEmpty() && operationStack.isEmpty()) {
-            return;
+        if (numberBuilder.isEmpty()) {
+            addZero();
         }
-
         operationStack.push(numberBuilder.toString());
         numberBuilder.setLength(0);
 
@@ -63,17 +62,25 @@ public class LogicProcessor {
     }
 
     private void addNumber(ButtonType type) {
+        if (!operationStack.isEmpty() && !isOperator(operationStack.peek())) {
+            operationStack.push(ButtonType.ADD.VALUE);
+        }
+
         if (type == ButtonType.ZERO) {
             addZero();
         } else if (type == ButtonType.DOT) {
             addDot();
         } else {
-            if (numberBuilder.length() == 1 && numberBuilder.charAt(0) == '0') {
-                numberBuilder.deleteCharAt(0);
-            }
-
-            numberBuilder.append(type.VALUE);
+            insertNumber(type.VALUE);
         }
+    }
+
+    private void insertNumber(String value) {
+        if (numberBuilder.length() == 1 && numberBuilder.charAt(0) == '0') {
+            numberBuilder.deleteCharAt(0);
+        }
+
+        numberBuilder.append(value);
     }
 
     private void addZero() {
@@ -84,7 +91,8 @@ public class LogicProcessor {
 
     private void addDot() {
         if (numberBuilder.isEmpty()) {
-            numberBuilder.append("0").append(".");
+            addZero();
+            addDot();
         } else if (!numberBuilder.toString().contains(".")) {
             numberBuilder.append(".");
         }
@@ -94,7 +102,7 @@ public class LogicProcessor {
         if (!operationStack.isEmpty() && numberBuilder.isEmpty()) {
             return;
         } else if (numberBuilder.isEmpty()) {
-            numberBuilder.append("0");
+            addZero();
         }
 
         insertOperator(type.VALUE);
@@ -153,14 +161,15 @@ public class LogicProcessor {
         @Override
         protected String doInBackground() throws Exception {
             Deque<String> operators = new ArrayDeque<>();
-
+            Deque<String> postfixStack = new ArrayDeque<>();
             while (!operationStack.isEmpty()) {
                 String item = operationStack.pop();
                 if (isOperator(item)) {
                 }
             }
 
-            return "Text Run";
+            operationStack.push(postfixStack.pop());
+            return operationStack.peek();
         }
 
         @Override
