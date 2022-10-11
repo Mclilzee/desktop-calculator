@@ -1,9 +1,7 @@
 package project;
 
 import javax.swing.*;
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
 
 public class LogicProcessor {
@@ -63,7 +61,7 @@ public class LogicProcessor {
     }
 
     private void addZero() {
-        if (numberBuilder.toString().contains(".") || numberBuilder.isEmpty()) {
+        if (numberBuilder.length() != 1 || numberBuilder.charAt(0) != '0') {
             numberBuilder.append("0");
         }
     }
@@ -87,14 +85,18 @@ public class LogicProcessor {
     }
 
     private void insertOperator(String operator) {
+        trimNumberBuilder();
+        operationStack.push(numberBuilder.toString());
+        operationStack.push(operator);
+        numberBuilder.setLength(0);
+    }
+
+    private void trimNumberBuilder() {
         if (numberBuilder.toString().contains(".")) {
             while (numberBuilder.toString().endsWith("0") || numberBuilder.toString().endsWith(".")) {
                 numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             }
         }
-        operationStack.push(numberBuilder.toString());
-        operationStack.push(operator);
-        numberBuilder.setLength(0);
     }
 
     private boolean isOperator(String text) {
