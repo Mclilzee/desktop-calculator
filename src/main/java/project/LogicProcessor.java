@@ -2,6 +2,7 @@ package project;
 
 import javax.swing.*;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 public class LogicProcessor {
@@ -25,16 +26,15 @@ public class LogicProcessor {
 
         switch (type) {
             case CLEAR -> {
-                equationScreen.setText("");
                 resultScreen.setText("0");
                 numberBuilder.setLength(0);
+                operationStack.clear();
             }
             case DELETE -> numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             case EQUALS -> performEquation();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> numberBuilder.append(type.VALUE);
         }
-
 
         setEquationScreenFromStack();
     }
@@ -45,17 +45,13 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (!operationStack.isEmpty() && isOperator(operationStack.peek())) {
-            return;
-        }
-
-        if (numberBuilder.isEmpty()) {
+        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
             numberBuilder.append("0");
+        } else if (!numberBuilder.isEmpty()) {
+            operationStack.push(numberBuilder.toString());
+            operationStack.push(type.VALUE);
+            numberBuilder.setLength(0);
         }
-
-        operationStack.push(numberBuilder.toString());
-        operationStack.push(type.VALUE);
-        numberBuilder.setLength(0);
     }
 
     private boolean isOperator(String text) {
@@ -64,8 +60,10 @@ public class LogicProcessor {
 
     private void setEquationScreenFromStack() {
         StringBuilder equationBuilder = new StringBuilder();
-        for (String text : operationStack) {
-            equationBuilder.append(text);
+        String[] stackArray = operationStack.toArray(new String[0]);
+
+        for (int i = stackArray.length - 1; i >= 0; i--) {
+            equationBuilder.append(stackArray[i]);
         }
 
         equationBuilder.append(numberBuilder.toString());
