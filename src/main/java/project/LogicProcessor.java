@@ -50,16 +50,24 @@ public class LogicProcessor {
         } else if (type == ButtonType.DOT) {
             addDot();
         } else {
+            if (numberBuilder.length() == 1 && numberBuilder.charAt(0) == '0') {
+                numberBuilder.deleteCharAt(0);
+            }
+
             numberBuilder.append(type.VALUE);
         }
     }
 
     private void addZero() {
-
+        if (numberBuilder.toString().contains(".") || numberBuilder.isEmpty()) {
+            numberBuilder.append("0");
+        }
     }
 
     private void addDot() {
-        if (!numberBuilder.toString().contains(".")) {
+        if (numberBuilder.isEmpty()) {
+            numberBuilder.append("0").append(".");
+        } else if (!numberBuilder.toString().contains(".")) {
             numberBuilder.append(".");
         }
     }
@@ -71,8 +79,17 @@ public class LogicProcessor {
             numberBuilder.append("0");
         }
 
+        insertOperator(type.VALUE);
+    }
+
+    private void insertOperator(String operator) {
+        if (numberBuilder.toString().contains(".")) {
+            while (numberBuilder.toString().endsWith("0")) {
+                numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+            }
+        }
         operationStack.push(numberBuilder.toString());
-        operationStack.push(type.VALUE);
+        operationStack.push(operator);
         numberBuilder.setLength(0);
     }
 
