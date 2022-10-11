@@ -12,18 +12,24 @@ public enum ButtonType {
     NINE("9"),
     ZERO("0"),
     DOT("."),
-    ADD("\u002B"),
-    SUBTRACT("\u2212"),
-    MULTIPLY("\u00D7"),
-    DIVIDE("\u00F7"),
+    ADD("\u002B", 1),
+    SUBTRACT("\u2212", 1),
+    MULTIPLY("\u00D7", 2),
+    DIVIDE("\u00F7", 2),
     EQUALS("="),
     CLEAR("C"),
     DELETE("Del");
 
     public final String VALUE;
+    public final int PRECEDENCE;
+
+    ButtonType(String value, int precedence) {
+        this.VALUE = value;
+        this.PRECEDENCE = precedence;
+    }
 
     ButtonType(String value) {
-        this.VALUE = value;
+        this(value, 0);
     }
 
     @Override
