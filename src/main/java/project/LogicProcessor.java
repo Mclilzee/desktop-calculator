@@ -222,7 +222,8 @@ public class LogicProcessor {
                 case ADD -> postfixStack.push(firstNumber.add(secondNumber));
                 case SUBTRACT -> postfixStack.push(firstNumber.subtract(secondNumber));
                 case MULTIPLY -> postfixStack.push(firstNumber.multiply(secondNumber));
-                case DIVIDE -> postfixStack.push(firstNumber.divide(secondNumber, 20, RoundingMode.CEILING));
+                case DIVIDE ->
+                        postfixStack.push(firstNumber.divide(secondNumber, 10, RoundingMode.CEILING).stripTrailingZeros());
             }
         }
 
@@ -240,7 +241,8 @@ public class LogicProcessor {
         protected void done() {
             try {
                 resultScreen.setText(get());
-            } catch (InterruptedException | ExecutionException ignored) {
+            } catch (InterruptedException | ExecutionException e) {
+                resultScreen.setText("Cannot divide by zero");
             }
         }
     }
