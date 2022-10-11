@@ -168,12 +168,16 @@ public class LogicProcessor {
         protected String doInBackground() {
 
             while (!operationStack.isEmpty()) {
-                String element = operationStack.pop();
+                String element = operationStack.pollLast();
                 if (isNumber(element)) {
                     postfixStack.push(new BigDecimal(element));
                 } else {
                     performOperatorInsertion(element);
                 }
+            }
+
+            while (!operators.isEmpty()) {
+                performCalculation();
             }
 
             operationStack.push(postfixStack.pop().toString());
@@ -190,18 +194,21 @@ public class LogicProcessor {
 
         private void performPrecedenceInsertion(String element) {
             ButtonType type = getButtonType(element);
-            ButtonType previousType = getButtonType(operators.peek());
 
-            if (type.PRECEDENCE < previousType.PRECEDENCE) {
-                performCalculation();
+            while (!operators.isEmpty()) {
+                if (type.PRECEDENCE <= getButtonType(operators.peek()).PRECEDENCE) {
+                    performCalculation();
+                } else {
+                    break;
+                }
             }
 
             operators.push(type.VALUE);
         }
 
         private void performCalculation() {
-            BigDecimal firstNumber = postfixStack.pop();
             BigDecimal secondNumber = postfixStack.pop();
+            BigDecimal firstNumber = postfixStack.pop();
             ButtonType operatorType = getButtonType(operators.pop());
 
             switch (operatorType) {
