@@ -1,6 +1,7 @@
 package project;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
@@ -23,7 +24,6 @@ public class LogicProcessor {
     }
 
     public void buttonPress(ButtonType type) {
-
         switch (type) {
             case CLEAR -> {
                 resultScreen.setText("0");
@@ -41,14 +41,11 @@ public class LogicProcessor {
 
     private void performEquation() {
         if (numberBuilder.isEmpty() && operationStack.isEmpty()) {
-
-            // if builder is empty, then last element in stack is operator
-        } else if (numberBuilder.isEmpty() || numberBuilder.toString().endsWith(".")) {
-            operationStack.push("0");
-        } else {
-            operationStack.push(numberBuilder.toString());
-            numberBuilder.setLength(0);
+            return;
         }
+
+        operationStack.push(numberBuilder.toString());
+        numberBuilder.setLength(0);
     }
 
     private void addNumber(ButtonType type) {
@@ -82,7 +79,7 @@ public class LogicProcessor {
     private void addOperator(ButtonType type) {
         if (!operationStack.isEmpty() && numberBuilder.isEmpty()) {
             return;
-        } else if (numberBuilder.isEmpty() || numberBuilder.toString().endsWith(".")) {
+        } else if (numberBuilder.isEmpty()) {
             numberBuilder.append("0");
         }
 
@@ -91,7 +88,7 @@ public class LogicProcessor {
 
     private void insertOperator(String operator) {
         if (numberBuilder.toString().contains(".")) {
-            while (numberBuilder.toString().endsWith("0")) {
+            while (numberBuilder.toString().endsWith("0") || numberBuilder.toString().endsWith(".")) {
                 numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             }
         }
