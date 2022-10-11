@@ -3,20 +3,19 @@ package project;
 import javax.swing.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.ExecutionException;
 
 public class LogicProcessor {
 
     private final JLabel resultScreen;
     private final JLabel equationScreen;
     private final Deque<String> operationStack;
-    private final Deque<String> postfixStack;
     private final StringBuilder numberBuilder;
 
     public LogicProcessor(CalculatorScreen screen) {
         this.resultScreen = screen.getResultLabel();
         this.equationScreen = screen.getEquationLabel();
         this.operationStack = new ArrayDeque<>();
-        this.postfixStack = new ArrayDeque<>();
 
         this.numberBuilder = new StringBuilder();
     }
@@ -44,6 +43,23 @@ public class LogicProcessor {
 
         operationStack.push(numberBuilder.toString());
         numberBuilder.setLength(0);
+
+        new ProcessorWorker().execute();
+    }
+
+    private int getParenthesesDifference() {
+        int openParentheses = 0;
+        int closedParentheses = 0;
+
+        for (String element : operationStack) {
+            if (element.equals("(")) {
+                openParentheses++;
+            } else if (element.equals(")")) {
+                closedParentheses++;
+            }
+        }
+
+        return openParentheses - closedParentheses;
     }
 
     private void addNumber(ButtonType type) {
@@ -130,5 +146,29 @@ public class LogicProcessor {
 
         equationBuilder.append(numberBuilder.toString());
         equationScreen.setText(equationBuilder.toString());
+    }
+
+    private class ProcessorWorker extends SwingWorker<String, Object> {
+
+        @Override
+        protected String doInBackground() throws Exception {
+            Deque<String> operators = new ArrayDeque<>();
+
+            while (!operationStack.isEmpty()) {
+                String item = operationStack.pop();
+                if (isOperator(item)) {
+                }
+            }
+
+            return "Text Run";
+        }
+
+        @Override
+        protected void done() {
+            try {
+                resultScreen.setText(get());
+            } catch (InterruptedException | ExecutionException ignored) {
+            }
+        }
     }
 }
