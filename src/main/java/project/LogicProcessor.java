@@ -40,8 +40,15 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
-        resultScreen.setText(numberBuilder.toString());
-        equationScreen.setText(numberBuilder.toString());
+        if (numberBuilder.isEmpty() && operationStack.isEmpty()) {
+
+            // if builder is empty, then last element in stack is operator
+        } else if (numberBuilder.isEmpty() || numberBuilder.toString().endsWith(".")) {
+            operationStack.push("0");
+        } else {
+            operationStack.push(numberBuilder.toString());
+            numberBuilder.setLength(0);
+        }
     }
 
     private void addNumber(ButtonType type) {
@@ -99,9 +106,15 @@ public class LogicProcessor {
 
     private void deleteLastCharacter() {
         // if numberBuilder is empty then last operation is an operator, remove from stack
-        if (numberBuilder.isEmpty()) {
-            operationStack.pop();
-        } else {
+        if (numberBuilder.isEmpty() && !operationStack.isEmpty()) {
+            String lastElement = operationStack.pop();
+
+            if (!isOperator(lastElement)) {
+                numberBuilder.append(lastElement);
+            }
+        }
+
+        if (!numberBuilder.isEmpty()) {
             numberBuilder.deleteCharAt(numberBuilder.length() - 1);
         }
     }
