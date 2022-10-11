@@ -17,7 +17,7 @@ public class Calculator extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        panel.add(CalculatorScreen.getPanel(), BorderLayout.NORTH);
+        panel.add(new CalculatorScreen(), BorderLayout.NORTH);
         panel.add(new CalculatorButtonsPanel(), BorderLayout.SOUTH);
 
         add(panel);
