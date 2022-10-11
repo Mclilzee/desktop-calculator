@@ -40,13 +40,18 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
-        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
+        if (hasMissingZeroes()) {
             addZero();
         }
+
         operationStack.push(numberBuilder.toString());
         numberBuilder.setLength(0);
-
         new ProcessorWorker().execute();
+    }
+
+    private boolean hasMissingZeroes() {
+        return operationStack.isEmpty() && numberBuilder.isEmpty() ||
+                !operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty();
     }
 
     private int getParenthesesDifference() {
@@ -102,7 +107,7 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (!operationStack.isEmpty() && !isNumber(operationStack.peek())) {
+        if (!operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty()) {
             return;
         }
 
