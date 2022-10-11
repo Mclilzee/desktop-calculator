@@ -92,9 +92,11 @@ public class LogicProcessor {
     }
 
     private void trimNumberBuilder() {
-        if (numberBuilder.toString().contains(".")) {
-            while (numberBuilder.toString().endsWith("0") || numberBuilder.toString().endsWith(".")) {
+        while (numberBuilder.toString().contains(".")) {
+            if (numberBuilder.toString().endsWith("0") || numberBuilder.toString().endsWith(".")) {
                 numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+            } else {
+                break;
             }
         }
     }
