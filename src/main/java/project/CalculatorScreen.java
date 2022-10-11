@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public final class CalculatorScreen extends JPanel {
+public class CalculatorScreen extends JPanel {
     
     private final JLabel resultLabel;
     private final JLabel equationLabel;

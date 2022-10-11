@@ -5,9 +5,9 @@ import java.awt.*;
 
 public class CalculatorButtonsPanel extends JPanel {
 
-    private final LogicProccessor processor;
+    private final LogicProcessor processor;
     public CalculatorButtonsPanel(CalculatorScreen screen) {
-        this.processor = new LogicProccessor(screen);
+        this.processor = new LogicProcessor(screen);
 
         GridLayout layout = new GridLayout(5, 4, 10, 10);
         setLayout(layout);
@@ -42,42 +42,6 @@ public class CalculatorButtonsPanel extends JPanel {
             setName(type.name());
             setFocusPainted(false);
             addActionListener(e -> processor.buttonPress(type));
-        }
-    }
-
-    public enum ButtonType {
-        ONE("1"),
-        TWO("2"),
-        THREE("3"),
-        FOUR("4"),
-        FIVE("5"),
-        SIX("6"),
-        SEVEN("7"),
-        EIGHT("8"),
-        NINE("9"),
-        ZERO("0"),
-        DOT("."),
-        ADD("\u002B"),
-        SUBTRACT("\u2212"),
-        MULTIPLY("\u00D7"),
-        DIVIDE("\u00F7"),
-        EQUALS("="),
-        CLEAR("C"),
-        DELETE("Del");
-
-        private final String value;
-
-        ButtonType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return super.toString().substring(0, 1).toUpperCase() + super.toString().substring(1).toLowerCase();
         }
     }
 
