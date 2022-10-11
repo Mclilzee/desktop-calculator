@@ -115,9 +115,11 @@ public class LogicProcessor {
 
     private void insertOperator(String operator) {
         trimNumberBuilder();
-        operationStack.push(numberBuilder.toString());
+        if (!numberBuilder.isEmpty()) {
+            operationStack.push(numberBuilder.toString());
+            numberBuilder.setLength(0);
+        }
         operationStack.push(operator);
-        numberBuilder.setLength(0);
     }
 
     private void trimNumberBuilder() {
