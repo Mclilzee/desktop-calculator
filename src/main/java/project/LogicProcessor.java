@@ -40,8 +40,7 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
-        // if builder is empty, then last operation is operator or operationStack is empty;
-        if (numberBuilder.isEmpty()) {
+        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
             addZero();
         }
         operationStack.push(numberBuilder.toString());
@@ -103,9 +102,11 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (!operationStack.isEmpty() && numberBuilder.isEmpty()) {
+        if (!operationStack.isEmpty() && !isNumber(operationStack.peek())) {
             return;
-        } else if (numberBuilder.isEmpty()) {
+        }
+
+        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
             addZero();
         }
 
@@ -134,8 +135,7 @@ public class LogicProcessor {
     }
 
     private void deleteLastCharacter() {
-        // if numberBuilder is empty then last operation is an operator, remove from stack
-        if (numberBuilder.isEmpty() && !operationStack.isEmpty()) {
+        if (!operationStack.isEmpty() && !isNumber(operationStack.peek())) {
             String lastElement = operationStack.pop();
 
             if (isNumber(lastElement)) {
