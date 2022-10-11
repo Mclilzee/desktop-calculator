@@ -17,18 +17,18 @@ public class CalculatorButtonsPanel extends JPanel {
         add(new CalculatorButton(ButtonType.SEVEN));
         add(new CalculatorButton(ButtonType.EIGHT));
         add(new CalculatorButton(ButtonType.NINE));
-        add(new CalculatorButton(ButtonType.DIVISION));
+        add(new CalculatorButton(ButtonType.DIVIDE));
         add(new CalculatorButton(ButtonType.FOUR));
         add(new CalculatorButton(ButtonType.FIVE));
         add(new CalculatorButton(ButtonType.SIX));
-        add(new CalculatorButton(ButtonType.MULTIPLICATION));
+        add(new CalculatorButton(ButtonType.MULTIPLY));
         add(new CalculatorButton(ButtonType.ONE));
         add(new CalculatorButton(ButtonType.TWO));
         add(new CalculatorButton(ButtonType.THREE));
-        add(new CalculatorButton(ButtonType.ADDICTION));
+        add(new CalculatorButton(ButtonType.ADD));
         add(new CalculatorButton(ButtonType.DOT));
         add(new CalculatorButton(ButtonType.ZERO));
         add(new CalculatorButton(ButtonType.EQUALS));
-        add(new CalculatorButton(ButtonType.SUBTRACTION));
+        add(new CalculatorButton(ButtonType.SUBTRACT));
     }
 }
