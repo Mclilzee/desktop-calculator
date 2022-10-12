@@ -87,20 +87,21 @@ public final class CalculationHandler {
             case DIVIDE -> performDivision();
             case POWER -> performExponentiation();
             case SQUARE_ROOT -> performSquareRootOperation();
+            default -> throw new IllegalArgumentException();
         }
     }
 
     private static void performAddition() {
         BigDecimal secondNumber = postfixStack.pop();
         BigDecimal firstNumber = postfixStack.pop();
-        BigDecimal result = secondNumber.add(firstNumber);
+        BigDecimal result = firstNumber.add(secondNumber);
         postfixStack.push(result.stripTrailingZeros());
     }
 
     private static void performSubtraction() {
         BigDecimal secondNumber = postfixStack.pop();
         BigDecimal firstNumber = postfixStack.pop();
-        BigDecimal result = secondNumber.subtract(firstNumber);
+        BigDecimal result = firstNumber.subtract(secondNumber);
         postfixStack.push(result.stripTrailingZeros());
     }
 

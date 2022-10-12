@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.NoSuchElementException;
 
 public class LogicProcessor {
 
@@ -68,7 +67,7 @@ public class LogicProcessor {
         try {
             balanceParentheses();
             CalculationHandler.displayResult(operationStack, resultScreen);
-        } catch (NoSuchElementException | ArithmeticException | IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             equationScreen.setForeground(Color.RED.darker());
         }
     }
@@ -106,13 +105,9 @@ public class LogicProcessor {
 
     private void negateNumber() {
         addValidNumberBuilder();
-        if (operationStack.isEmpty()) {
-            addParentheses();
-            operationStack.add(ButtonType.SUBTRACT.VALUE);
-        } else if (operationStack.size() == 1) {
+        if (operationStack.size() < 2) {
             operationStack.push(ButtonType.SUBTRACT.VALUE);
             operationStack.push(ButtonType.OPEN_PARENTHESES.VALUE);
-            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
         } else {
             switchNegation();
         }
@@ -243,7 +238,7 @@ public class LogicProcessor {
         if (operationStack.isEmpty() && type != ButtonType.SQUARE_ROOT) {
             return;
         }
-        if (endsWithOperator()) {
+        if (type != ButtonType.SQUARE_ROOT && endsWithOperator()) {
             operationStack.pollLast();
         }
 
