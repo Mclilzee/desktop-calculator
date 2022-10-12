@@ -39,6 +39,7 @@ public class LogicProcessor {
             case CLEAR_ENTRY -> numberBuilder.setLength(0);
             case DELETE -> deleteLastCharacter();
             case EQUALS -> handleEquation();
+            case PLUS_MINUS -> negateNumber();
             case PARENTHESES -> addParentheses();
             case SQUARE_ROOT -> addSquareRoot();
             case POWER_TWO -> addPowerOfTwo();
@@ -65,6 +66,7 @@ public class LogicProcessor {
 
     private void performEquation() {
         try {
+            balanceParentheses();
             CalculationHandler.displayResult(operationStack, resultScreen);
         } catch (NoSuchElementException | ArithmeticException | IndexOutOfBoundsException e) {
             equationScreen.setForeground(Color.RED.darker());
@@ -102,6 +104,65 @@ public class LogicProcessor {
         }
     }
 
+    private void negateNumber() {
+        addValidNumberBuilder();
+        if (operationStack.isEmpty()) {
+            addParentheses();
+            operationStack.add(ButtonType.SUBTRACT.VALUE);
+        } else if (operationStack.size() == 1) {
+            operationStack.push(ButtonType.SUBTRACT.VALUE);
+            operationStack.push(ButtonType.OPEN_PARENTHESES.VALUE);
+            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
+        } else {
+            switchNegation();
+        }
+    }
+
+    private void switchNegation() {
+        String firstElement = operationStack.pop();
+        String secondElement = operationStack.pop();
+
+        if (firstElement.equals(ButtonType.OPEN_PARENTHESES.VALUE) && secondElement.equals(ButtonType.SUBTRACT.VALUE)) {
+            removeUnnecessaryParentheses();
+        } else {
+            operationStack.push(secondElement);
+            operationStack.push(firstElement);
+            performNegation();
+        }
+
+        if (noneClosedParentheses() < 0) {
+            operationStack.pollLast();
+        }
+    }
+
+    private void performNegation() {
+        if (operationStack.size() > 2) {
+            operationStack.push(ButtonType.OPEN_PARENTHESES.VALUE);
+            operationStack.push(ButtonType.SUBTRACT.VALUE);
+            operationStack.push(ButtonType.OPEN_PARENTHESES.VALUE);
+            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
+            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
+        }
+    }
+
+    private void removeUnnecessaryParentheses() {
+        if (operationStack.size() < 2) {
+            return;
+        }
+
+        if (operationStack.peek().equals(ButtonType.OPEN_PARENTHESES.VALUE) && operationStack.peekLast().equals(ButtonType.CLOSED_PARENTHESES.VALUE)) {
+            operationStack.pop();
+            operationStack.pollLast();
+        }
+    }
+
+    private void balanceParentheses() {
+        int count = noneClosedParentheses();
+        for (int i = 0; i < count; i++) {
+            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
+        }
+    }
+
     private void addPowerOfTwo() {
         addPower();
         addNumber(ButtonType.TWO);
@@ -120,7 +181,7 @@ public class LogicProcessor {
 
     private void addParentheses() {
         addValidNumberBuilder();
-        if (hasBalancedParentheses() || endsWithParentheses() || endsWithOperator()) {
+        if (noneClosedParentheses() == 0 || endsWithParentheses() || endsWithOperator()) {
             operationStack.add(ButtonType.OPEN_PARENTHESES.VALUE);
         } else {
             operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
@@ -134,7 +195,7 @@ public class LogicProcessor {
         return operationStack.peekLast().equals(ButtonType.OPEN_PARENTHESES.VALUE);
     }
 
-    private boolean hasBalancedParentheses() {
+    private int noneClosedParentheses() {
         int count = 0;
         for (String each : operationStack) {
             if (each.equals(ButtonType.OPEN_PARENTHESES.VALUE)) {
@@ -144,7 +205,7 @@ public class LogicProcessor {
             }
         }
 
-        return count == 0;
+        return count;
     }
 
     private void addNumber(ButtonType type) {
