@@ -44,7 +44,7 @@ public class LogicProcessor {
 
     private void performEquation() {
         if (validInput()) {
-            operationStack.add(numberBuilder.toString());
+            operationStack.add(getValidNumberBuilder());
             numberBuilder.setLength(0);
             CalculationHandler.displayResult(operationStack, resultScreen);
         } else {
@@ -119,10 +119,7 @@ public class LogicProcessor {
     }
 
     private void addDot() {
-        if (numberBuilder.isEmpty()) {
-            addZero();
-            addDot();
-        } else if (!numberBuilder.toString().contains(".")) {
+        if (numberBuilder.isEmpty() || !numberBuilder.toString().contains(".")) {
             numberBuilder.append(".");
         }
     }
@@ -140,22 +137,23 @@ public class LogicProcessor {
     }
 
     private void insertOperator(String operator) {
-        trimNumberBuilder();
         if (!numberBuilder.isEmpty()) {
-            operationStack.add(numberBuilder.toString());
+            operationStack.add(getValidNumberBuilder());
             numberBuilder.setLength(0);
         }
         operationStack.add(operator);
     }
 
-    private void trimNumberBuilder() {
-        while (numberBuilder.toString().contains(".")) {
-            if (numberBuilder.toString().endsWith("0") || numberBuilder.toString().endsWith(".")) {
-                numberBuilder.deleteCharAt(numberBuilder.length() - 1);
-            } else {
-                break;
-            }
+    private String getValidNumberBuilder() {
+        if (numberBuilder.toString().startsWith(".")) {
+            numberBuilder.replace(0, 1, "0.");
         }
+
+        if (numberBuilder.toString().endsWith(".")) {
+            numberBuilder.replace(numberBuilder.length() - 1, numberBuilder.length(), ".0");
+        }
+
+        return numberBuilder.toString();
     }
 
     private boolean isNumber(String text) {
