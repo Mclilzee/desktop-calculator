@@ -35,6 +35,7 @@ public class LogicProcessor {
             case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
             case PARENTHESES -> insertParentheses();
+            case SQUARE_ROOT -> insertSquareRoot();
             case POWER_TWO -> {
                 insertPower();
                 addNumber(ButtonType.TWO);
@@ -85,6 +86,11 @@ public class LogicProcessor {
         }
 
         return false;
+    }
+
+    private void insertSquareRoot() {
+        addOperator(ButtonType.SQUARE_ROOT);
+        insertParentheses();
     }
 
     private void insertPower() {
