@@ -56,11 +56,22 @@ public class LogicProcessor {
 
     private void handleEquation() {
         addValidNumberBuilder();
+        if (isNegated()) {
+            formatNegation();
+        }
         if (validInput()) {
             performEquation();
         } else {
             equationScreen.setForeground(Color.RED.darker());
         }
+    }
+
+    private void formatNegation() {
+        operationStack.pop();
+        operationStack.pop();
+        operationStack.push(ButtonType.OPEN_PARENTHESES.VALUE);
+        operationStack.push(ButtonType.MULTIPLY.VALUE);
+        operationStack.push("-1");
     }
 
     private void performEquation() {
@@ -114,20 +125,28 @@ public class LogicProcessor {
     }
 
     private void switchNegation() {
-        String firstElement = operationStack.pop();
-        String secondElement = operationStack.pop();
-
-        if (firstElement.equals(ButtonType.OPEN_PARENTHESES.VALUE) && secondElement.equals(ButtonType.SUBTRACT.VALUE)) {
+        if (isNegated()) {
+            operationStack.pop();
+            operationStack.pop();
             removeUnnecessaryParentheses();
         } else {
-            operationStack.push(secondElement);
-            operationStack.push(firstElement);
             performNegation();
         }
 
         if (noneClosedParentheses() < 0) {
             operationStack.pollLast();
         }
+    }
+
+    private boolean isNegated() {
+        if (operationStack.size() < 2) {
+            return false;
+        }
+        String firstElement = operationStack.pop();
+        String secondElement = operationStack.peek();
+        operationStack.push(firstElement);
+
+        return firstElement.equals(ButtonType.OPEN_PARENTHESES.VALUE) && secondElement.equals(ButtonType.SUBTRACT.VALUE);
     }
 
     private void performNegation() {
