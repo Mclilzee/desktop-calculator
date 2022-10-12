@@ -162,7 +162,7 @@ public class LogicProcessor {
 
     private void addOperator(ButtonType type) {
         addValidNumberBuilder();
-        if (operationStack.isEmpty()) {
+        if (operationStack.isEmpty() && type != ButtonType.SQUARE_ROOT) {
             return;
         }
         if (endsWithOperator()) {
@@ -190,7 +190,8 @@ public class LogicProcessor {
     }
 
     private boolean isOperator(String text) {
-        return text.length() == 1 && !text.matches("^(\\d|\\(|\\))");
+        return text.length() == 1 && !text.equals(ButtonType.SQUARE_ROOT.VALUE) &&
+                !text.matches("^(\\d|\\(|\\))");
     }
 
     private void setEquationScreenFromStack() {
