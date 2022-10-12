@@ -1,12 +1,12 @@
 package project;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.*;
 
 public final class CalculationHandler {
 
@@ -17,9 +17,22 @@ public final class CalculationHandler {
     private static final Deque<BigDecimal> postfixStack = new ArrayDeque<>();
 
     public static void displayResult(Deque<String> operationStack, JLabel resultLabel) {
+        Deque<String> copyOperationStack = new ArrayDeque<>(operationStack);
+        calculateStacks(copyOperationStack);
 
-        while (!operationStack.isEmpty()) {
-            String element = operationStack.pop();
+        if (!operators.isEmpty()) {
+            emptyStack();
+        }
+
+        String result = postfixStack.pop().toPlainString();
+        operationStack.clear();
+        operationStack.add(result);
+        resultLabel.setText(operationStack.peek());
+    }
+
+    private static void calculateStacks(Deque<String> copyOperationStack) {
+        while (!copyOperationStack.isEmpty()) {
+            String element = copyOperationStack.pop();
             if (isNumber(element)) {
                 postfixStack.push(new BigDecimal(element));
             } else if (element.equals(ButtonType.CLOSED_PARENTHESES.VALUE)) {
@@ -28,11 +41,6 @@ public final class CalculationHandler {
                 performOperatorInsertion(element);
             }
         }
-
-        emptyStack();
-
-        operationStack.add(postfixStack.pop().toPlainString());
-        resultLabel.setText(operationStack.peek());
     }
 
     private static void emptyStack() {

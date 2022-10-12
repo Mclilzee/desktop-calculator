@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.NoSuchElementException;
 
 public class LogicProcessor {
 
@@ -25,37 +26,47 @@ public class LogicProcessor {
             equationScreen.setForeground(Color.decode("#00b135"));
         }
 
-        switch (type) {
-            case CLEAR -> {
-                resultScreen.setText("0");
-                numberBuilder.setLength(0);
-                operationStack.clear();
-            }
-            case CLEAR_ENTRY -> numberBuilder.setLength(0);
-            case DELETE -> deleteLastCharacter();
-            case EQUALS -> performEquation();
-            case PARENTHESES -> addParentheses();
-            case SQUARE_ROOT -> addSquareRoot();
-            case POWER_TWO -> {
-                addPower();
-                addNumber(ButtonType.TWO);
-                addParentheses();
-            }
-            case POWER_Y -> addPower();
-            case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
-            default -> addNumber(type);
-        }
+        performAction(type);
 
         if (type != ButtonType.EQUALS) {
             setEquationScreenFromStack();
         }
     }
 
+    private void performAction(ButtonType type) {
+        switch (type) {
+            case CLEAR -> clearScreen();
+            case CLEAR_ENTRY -> numberBuilder.setLength(0);
+            case DELETE -> deleteLastCharacter();
+            case EQUALS -> performEquation();
+            case PARENTHESES -> addParentheses();
+            case SQUARE_ROOT -> addSquareRoot();
+            case POWER_TWO -> addPowerOfTwo();
+            case POWER_Y -> addPower();
+            case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
+            default -> addNumber(type);
+        }
+    }
+
+    private void clearScreen() {
+        resultScreen.setText("0");
+        numberBuilder.setLength(0);
+        operationStack.clear();
+    }
+
     private void performEquation() {
         addValidNumberBuilder();
         if (validInput()) {
-            CalculationHandler.displayResult(operationStack, resultScreen);
+            handleEquation();
         } else {
+            equationScreen.setForeground(Color.RED.darker());
+        }
+    }
+
+    private void handleEquation() {
+        try {
+            CalculationHandler.displayResult(operationStack, resultScreen);
+        } catch (NoSuchElementException | ArithmeticException | IndexOutOfBoundsException e) {
             equationScreen.setForeground(Color.RED.darker());
         }
     }
@@ -91,13 +102,19 @@ public class LogicProcessor {
         }
     }
 
-    private void addSquareRoot() {
-        addOperator(ButtonType.SQUARE_ROOT);
+    private void addPowerOfTwo() {
+        addPower();
+        addNumber(ButtonType.TWO);
         addParentheses();
     }
 
     private void addPower() {
         addOperator(ButtonType.POWER);
+        addParentheses();
+    }
+
+    private void addSquareRoot() {
+        addOperator(ButtonType.SQUARE_ROOT);
         addParentheses();
     }
 
