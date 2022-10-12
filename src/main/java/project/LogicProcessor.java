@@ -35,6 +35,11 @@ public class LogicProcessor {
             case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
             case PARENTHESES -> insertParentheses();
+            case POWER_TWO -> {
+                insertPower();
+                addNumber(ButtonType.TWO);
+                insertParentheses();
+            }
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> addNumber(type);
         }
@@ -81,8 +86,13 @@ public class LogicProcessor {
         return false;
     }
 
+    private void insertPower() {
+        addOperator(ButtonType.POWER);
+        insertParentheses();
+    }
+
     private void insertParentheses() {
-        if (hasBalancedParentheses() || endsWithParenthesesOrOperator()) {
+        if (hasBalancedParentheses() || endsWithParentheses() || endsWithOperator()) {
             operationStack.add(ButtonType.OPEN_PARENTHESES.VALUE);
         } else {
             operationStack.add(numberBuilder.toString());
@@ -91,13 +101,11 @@ public class LogicProcessor {
         }
     }
 
-    private boolean endsWithParenthesesOrOperator() {
+    private boolean endsWithParentheses() {
         if (!numberBuilder.isEmpty() || operationStack.isEmpty()) {
             return false;
         }
-
-        String lastElement = operationStack.peekLast();
-        return lastElement.equals(ButtonType.OPEN_PARENTHESES.VALUE) || isOperator(lastElement);
+        return operationStack.peekLast().equals(ButtonType.OPEN_PARENTHESES.VALUE);
     }
 
     private boolean hasBalancedParentheses() {
@@ -148,7 +156,7 @@ public class LogicProcessor {
             return;
         }
 
-        if (numberBuilder.isEmpty() && isOperator(operationStack.peekLast())) {
+        if (endsWithOperator()) {
             operationStack.pollLast();
         }
 
