@@ -40,6 +40,7 @@ public class LogicProcessor {
                 addNumber(ButtonType.TWO);
                 insertParentheses();
             }
+            case POWER_Y -> insertPower();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> addNumber(type);
         }
