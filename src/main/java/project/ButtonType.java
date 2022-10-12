@@ -24,7 +24,7 @@ public enum ButtonType {
     SQUARE_ROOT("\u221A", 3),
     POWER("^", 3),
     POWER_TWO("\u03C7" + "\u00B2"),
-    POWER_Y("\u03C7" + "y"),
+    POWER_Y("\u03C7" + "\u02B8"),
     PLUS_MINUS("\u00B1");
 
     public final String VALUE;
