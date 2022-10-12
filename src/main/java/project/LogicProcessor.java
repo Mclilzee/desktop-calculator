@@ -34,6 +34,7 @@ public class LogicProcessor {
             case CLEAR_ENTRY -> numberBuilder.setLength(0);
             case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
+            case PARENTHESES -> insertParentheses();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> addNumber(type);
         }
@@ -62,7 +63,7 @@ public class LogicProcessor {
     }
 
     private boolean endsWithOperator() {
-        return !operationStack.isEmpty() && !isNumber(operationStack.peekLast()) && numberBuilder.isEmpty();
+        return !operationStack.isEmpty() && isOperator(operationStack.peekLast()) && numberBuilder.isEmpty();
     }
 
     private boolean hasZeroDivision() {
@@ -80,19 +81,36 @@ public class LogicProcessor {
         return false;
     }
 
-    private int getParenthesesDifference() {
-        int openParentheses = 0;
-        int closedParentheses = 0;
+    private void insertParentheses() {
+        if (hasBalancedParentheses() || endsWithParenthesesOrOperator()) {
+            operationStack.add(ButtonType.OPEN_PARENTHESES.VALUE);
+        } else {
+            operationStack.add(numberBuilder.toString());
+            operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
+            numberBuilder.setLength(0);
+        }
+    }
 
-        for (String element : operationStack) {
-            if (element.equals("(")) {
-                openParentheses++;
-            } else if (element.equals(")")) {
-                closedParentheses++;
+    private boolean endsWithParenthesesOrOperator() {
+        if (!numberBuilder.isEmpty() || operationStack.isEmpty()) {
+            return false;
+        }
+
+        String lastElement = operationStack.peekLast();
+        return lastElement.equals(ButtonType.OPEN_PARENTHESES.VALUE) || isOperator(lastElement);
+    }
+
+    private boolean hasBalancedParentheses() {
+        int count = 0;
+        for (String each : operationStack) {
+            if (each.equals(ButtonType.OPEN_PARENTHESES.VALUE)) {
+                count++;
+            } else if (each.equals(ButtonType.CLOSED_PARENTHESES.VALUE)) {
+                count--;
             }
         }
 
-        return openParentheses - closedParentheses;
+        return count == 0;
     }
 
     private void addNumber(ButtonType type) {
@@ -130,7 +148,7 @@ public class LogicProcessor {
             return;
         }
 
-        if (numberBuilder.isEmpty() && !isNumber(operationStack.peekLast())) {
+        if (numberBuilder.isEmpty() && isOperator(operationStack.peekLast())) {
             operationStack.pollLast();
         }
 
@@ -157,8 +175,8 @@ public class LogicProcessor {
         return numberBuilder.toString();
     }
 
-    private boolean isNumber(String text) {
-        return text.length() != 1 || text.matches("^\\d");
+    private boolean isOperator(String text) {
+        return text.length() == 1 && !text.matches("^(\\d|\\(|\\))");
     }
 
     private void deleteLastCharacter() {
@@ -168,7 +186,7 @@ public class LogicProcessor {
         }
 
         String lastElement = operationStack.isEmpty() ? "" : operationStack.pollLast();
-        if (!lastElement.isEmpty() && isNumber(lastElement)) {
+        if (!lastElement.isEmpty() && !isOperator(lastElement)) {
             numberBuilder.append(lastElement, 0, lastElement.length() - 1);
         }
     }
