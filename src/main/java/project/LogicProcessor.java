@@ -1,6 +1,7 @@
 package project;
 
 import javax.swing.*;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
@@ -24,6 +25,10 @@ public class LogicProcessor {
     }
 
     public void buttonPress(ButtonType type) {
+        if (equationScreen.getForeground().equals(Color.RED.darker())) {
+            equationScreen.setForeground(Color.decode("#00b135"));
+        }
+
         switch (type) {
             case CLEAR -> {
                 resultScreen.setText("0");
@@ -40,13 +45,40 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
-        if (hasMissingZeroes()) {
-            addZero();
+        if (validInput()) {
+            operationStack.push(numberBuilder.toString());
+            numberBuilder.setLength(0);
+            new ProcessorWorker().execute();
+        } else {
+            equationScreen.setForeground(Color.RED.darker());
+        }
+    }
+
+    private boolean validInput() {
+        if (operationStack.isEmpty() && !numberBuilder.isEmpty()) {
+            return true;
         }
 
-        operationStack.push(numberBuilder.toString());
-        numberBuilder.setLength(0);
-        new ProcessorWorker().execute();
+        return !endsWithOperator() && !hasZeroDivision();
+    }
+
+    private boolean endsWithOperator() {
+        return !operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty();
+    }
+
+    private boolean hasZeroDivision() {
+        String[] elements = operationStack.toArray(new String[0]);
+        if (elements[elements.length - 1].equals("0") && numberBuilder.toString().equals("0")) {
+            return true;
+        }
+
+        for (int i = 1; i < elements.length - 1; i++) {
+            if (elements[i - 1].equals(ButtonType.DIVIDE.VALUE) && elements[i].equals("0")) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean hasMissingZeroes() {
@@ -70,10 +102,6 @@ public class LogicProcessor {
     }
 
     private void addNumber(ButtonType type) {
-        if (!operationStack.isEmpty() && isNumber(operationStack.peek())) {
-            operationStack.push(ButtonType.ADD.VALUE);
-        }
-
         if (type == ButtonType.ZERO) {
             addZero();
         } else if (type == ButtonType.DOT) {
@@ -107,12 +135,12 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (!operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty()) {
+        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
             return;
         }
 
-        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
-            addZero();
+        if (numberBuilder.isEmpty() && !isNumber(operationStack.peek())) {
+            operationStack.pop();
         }
 
         insertOperator(type.VALUE);
