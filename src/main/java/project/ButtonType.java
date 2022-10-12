@@ -20,12 +20,14 @@ public enum ButtonType {
     CLEAR("C"),
     CLEAR_ENTRY("CE"),
     DELETE("Del"),
-    PARENTHESES("( )", 4),
     SQUARE_ROOT("\u221A", 3),
     POWER("^", 3),
     POWER_TWO("\u03C7" + "\u00B2"),
     POWER_Y("\u03C7" + "\u02B8"),
-    PLUS_MINUS("\u00B1");
+    PLUS_MINUS("\u00B1"),
+    OPEN_PARENTHESES("(", 4),
+    CLOSED_PARENTHESES(")", 4),
+    PARENTHESES(OPEN_PARENTHESES.VALUE + " " + CLOSED_PARENTHESES.VALUE);
 
     public final String VALUE;
 
