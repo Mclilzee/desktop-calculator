@@ -31,6 +31,7 @@ public class LogicProcessor {
                 numberBuilder.setLength(0);
                 operationStack.clear();
             }
+            case CLEAR_ENTRY -> numberBuilder.setLength(0);
             case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
