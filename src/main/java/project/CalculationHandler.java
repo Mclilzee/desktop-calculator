@@ -2,6 +2,7 @@ package project;
 
 import javax.swing.*;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
 import java.util.ArrayDeque;
@@ -69,17 +70,56 @@ public final class CalculationHandler {
     }
 
     private static void performCalculation() {
-        BigDecimal secondNumber = postfixStack.pop();
-        BigDecimal firstNumber = postfixStack.pop();
         ButtonType operatorType = getButtonType(operators.pop());
 
         switch (operatorType) {
-            case ADD -> postfixStack.push(firstNumber.add(secondNumber).stripTrailingZeros());
-            case SUBTRACT -> postfixStack.push(firstNumber.subtract(secondNumber).stripTrailingZeros());
-            case MULTIPLY -> postfixStack.push(firstNumber.multiply(secondNumber).stripTrailingZeros());
-            case DIVIDE ->
-                    postfixStack.push(firstNumber.divide(secondNumber, 10, RoundingMode.CEILING).stripTrailingZeros());
+            case ADD -> performAddition();
+            case SUBTRACT -> performSubtraction();
+            case MULTIPLY -> performMultiplication();
+            case DIVIDE -> performDivision();
+            case POWER -> performExponentiation();
+            case SQUARE_ROOT -> performSquareRootOperation();
         }
+    }
+
+    private static void performAddition() {
+        BigDecimal secondNumber = postfixStack.pop();
+        BigDecimal firstNumber = postfixStack.pop();
+        BigDecimal result = secondNumber.add(firstNumber);
+        postfixStack.push(result.stripTrailingZeros());
+    }
+
+    private static void performSubtraction() {
+        BigDecimal secondNumber = postfixStack.pop();
+        BigDecimal firstNumber = postfixStack.pop();
+        BigDecimal result = secondNumber.subtract(firstNumber);
+        postfixStack.push(result.stripTrailingZeros());
+    }
+
+    private static void performMultiplication() {
+        BigDecimal secondNumber = postfixStack.pop();
+        BigDecimal firstNumber = postfixStack.pop();
+        BigDecimal result = firstNumber.multiply(secondNumber);
+        postfixStack.push(result.stripTrailingZeros());
+    }
+
+    private static void performDivision() {
+        BigDecimal secondNumber = postfixStack.pop();
+        BigDecimal firstNumber = postfixStack.pop();
+        BigDecimal result = firstNumber.divide(secondNumber, 10, RoundingMode.CEILING);
+        postfixStack.push(result.stripTrailingZeros());
+    }
+
+    private static void performExponentiation() {
+        BigDecimal secondNumber = postfixStack.pop();
+        BigDecimal firstNumber = postfixStack.pop();
+        BigDecimal result = firstNumber.pow(secondNumber.intValue());
+        postfixStack.push(result.stripTrailingZeros());
+    }
+
+    private static void performSquareRootOperation() {
+        BigDecimal number = postfixStack.pop();
+        postfixStack.push(number.sqrt(new MathContext(20)));
     }
 
     private static ButtonType getButtonType(String element) {
