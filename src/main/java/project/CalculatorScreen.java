@@ -13,6 +13,7 @@ public class CalculatorScreen extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setAlignmentX(Component.RIGHT_ALIGNMENT);
         setBorder(new EmptyBorder(0, 0, 20, 0));
+        setBackground(Color.decode("#d3d3d3"));
 
         resultLabel = new JLabel();
         resultLabel.setName("ResultLabel");

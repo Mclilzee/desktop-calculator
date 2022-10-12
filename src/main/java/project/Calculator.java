@@ -2,6 +2,7 @@ package project;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 public class Calculator extends JFrame {
 
@@ -14,6 +15,7 @@ public class Calculator extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.decode("#d3d3d3"));
 
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         CalculatorScreen screen = new CalculatorScreen();

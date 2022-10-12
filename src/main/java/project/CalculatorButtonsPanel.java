@@ -1,6 +1,7 @@
 package project;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class CalculatorButtonsPanel extends JPanel {
@@ -10,9 +11,10 @@ public class CalculatorButtonsPanel extends JPanel {
     public CalculatorButtonsPanel(CalculatorScreen screen) {
         this.processor = new LogicProcessor(screen);
 
-        GridLayout layout = new GridLayout(6, 4, 10, 10);
+        GridLayout layout = new GridLayout(6, 4, 3, 3);
         setLayout(layout);
         setAlignmentX(RIGHT_ALIGNMENT);
+        setBackground(Color.decode("#d3d3d3"));
 
         add(new CalculatorButton(ButtonType.PARENTHESES));
         add(new CalculatorButton(ButtonType.CLEAR_ENTRY));
@@ -51,7 +53,9 @@ public class CalculatorButtonsPanel extends JPanel {
             super(type.VALUE);
             setName(type.toString());
             setFocusPainted(false);
+            setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
             setBackGroundColor(type.VALUE);
+            setBorder(new EmptyBorder(0,0,0,0));
             addActionListener(e -> processor.buttonPress(type));
         }
 
@@ -59,7 +63,7 @@ public class CalculatorButtonsPanel extends JPanel {
             if (value.equals(ButtonType.PLUS_MINUS.VALUE) || value.matches("[\\d|.]")) {
                 setBackground(Color.white);
             } else {
-                setBackground(Color.gray);
+                setBackground(Color.decode("#dcdcdc"));
             }
         }
     }
