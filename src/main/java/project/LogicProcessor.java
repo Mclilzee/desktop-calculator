@@ -46,7 +46,7 @@ public class LogicProcessor {
 
     private void performEquation() {
         if (validInput()) {
-            operationStack.push(numberBuilder.toString());
+            operationStack.add(numberBuilder.toString());
             numberBuilder.setLength(0);
             new ProcessorWorker().execute();
         } else {
@@ -63,7 +63,7 @@ public class LogicProcessor {
     }
 
     private boolean endsWithOperator() {
-        return !operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty();
+        return !operationStack.isEmpty() && !isNumber(operationStack.peekLast()) && numberBuilder.isEmpty();
     }
 
     private boolean hasZeroDivision() {
@@ -79,11 +79,6 @@ public class LogicProcessor {
         }
 
         return false;
-    }
-
-    private boolean hasMissingZeroes() {
-        return operationStack.isEmpty() && numberBuilder.isEmpty() ||
-                !operationStack.isEmpty() && !isNumber(operationStack.peek()) && numberBuilder.isEmpty();
     }
 
     private int getParenthesesDifference() {
@@ -139,8 +134,8 @@ public class LogicProcessor {
             return;
         }
 
-        if (numberBuilder.isEmpty() && !isNumber(operationStack.peek())) {
-            operationStack.pop();
+        if (numberBuilder.isEmpty() && !isNumber(operationStack.peekLast())) {
+            operationStack.pollLast();
         }
 
         insertOperator(type.VALUE);
@@ -149,10 +144,10 @@ public class LogicProcessor {
     private void insertOperator(String operator) {
         trimNumberBuilder();
         if (!numberBuilder.isEmpty()) {
-            operationStack.push(numberBuilder.toString());
+            operationStack.add(numberBuilder.toString());
             numberBuilder.setLength(0);
         }
-        operationStack.push(operator);
+        operationStack.add(operator);
     }
 
     private void trimNumberBuilder() {
@@ -170,25 +165,22 @@ public class LogicProcessor {
     }
 
     private void deleteLastCharacter() {
-        if (!operationStack.isEmpty()) {
-            String lastElement = operationStack.pop();
-
-            if (isNumber(lastElement)) {
-                numberBuilder.append(lastElement);
-            }
-        }
-
         if (!numberBuilder.isEmpty()) {
             numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+            return;
+        }
+
+        String lastElement = operationStack.isEmpty() ? "" : operationStack.pollLast();
+        if (!lastElement.isEmpty() && isNumber(lastElement)) {
+            numberBuilder.append(lastElement, 0, lastElement.length() - 1);
         }
     }
 
     private void setEquationScreenFromStack() {
         StringBuilder equationBuilder = new StringBuilder();
-        String[] stackArray = operationStack.toArray(new String[0]);
 
-        for (int i = stackArray.length - 1; i >= 0; i--) {
-            equationBuilder.append(stackArray[i]);
+        for (String element : operationStack) {
+            equationBuilder.append(element);
         }
 
         equationBuilder.append(numberBuilder.toString());
@@ -203,7 +195,7 @@ public class LogicProcessor {
         protected String doInBackground() {
 
             while (!operationStack.isEmpty()) {
-                String element = operationStack.pollLast();
+                String element = operationStack.pop();
                 if (isNumber(element)) {
                     postfixStack.push(new BigDecimal(element));
                 } else {
@@ -215,7 +207,7 @@ public class LogicProcessor {
                 performCalculation();
             }
 
-            operationStack.push(postfixStack.pop().toPlainString());
+            operationStack.add(postfixStack.pop().toPlainString());
             return operationStack.peek();
         }
 
