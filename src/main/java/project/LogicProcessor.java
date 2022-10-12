@@ -187,7 +187,7 @@ public class LogicProcessor {
                 performCalculation();
             }
 
-            operationStack.push(postfixStack.pop().toString());
+            operationStack.push(postfixStack.pop().toPlainString());
             return operationStack.peek();
         }
 
@@ -219,9 +219,9 @@ public class LogicProcessor {
             ButtonType operatorType = getButtonType(operators.pop());
 
             switch (operatorType) {
-                case ADD -> postfixStack.push(firstNumber.add(secondNumber));
-                case SUBTRACT -> postfixStack.push(firstNumber.subtract(secondNumber));
-                case MULTIPLY -> postfixStack.push(firstNumber.multiply(secondNumber));
+                case ADD -> postfixStack.push(firstNumber.add(secondNumber).stripTrailingZeros());
+                case SUBTRACT -> postfixStack.push(firstNumber.subtract(secondNumber).stripTrailingZeros());
+                case MULTIPLY -> postfixStack.push(firstNumber.multiply(secondNumber).stripTrailingZeros());
                 case DIVIDE ->
                         postfixStack.push(firstNumber.divide(secondNumber, 10, RoundingMode.CEILING).stripTrailingZeros());
             }
