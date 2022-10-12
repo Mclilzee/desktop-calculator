@@ -18,9 +18,17 @@ public enum ButtonType {
     DIVIDE("\u00F7", 2),
     EQUALS("="),
     CLEAR("C"),
-    DELETE("Del");
+    CLEAR_ENTRY("CE"),
+    DELETE("Del"),
+    PARENTHESES("( )", 4),
+    SQUARE_ROOT("\u221A", 3),
+    POWER("^", 3),
+    POWER_TWO("\u03C7" + "\u00B2"),
+    POWER_Y("\u03C7" + "y"),
+    PLUS_MINUS("\u00B1");
 
     public final String VALUE;
+
     public final int PRECEDENCE;
 
     ButtonType(String value, int precedence) {
@@ -34,6 +42,17 @@ public enum ButtonType {
 
     @Override
     public String toString() {
-        return super.toString().substring(0, 1).toUpperCase() + super.toString().substring(1).toLowerCase();
+        StringBuilder builder = new StringBuilder();
+        String[] strings = super.toString().split("_");
+
+        for (String each : strings) {
+            builder.append(capitalize(each));
+        }
+
+        return builder.toString();
+    }
+
+    private String capitalize(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
     }
 }
