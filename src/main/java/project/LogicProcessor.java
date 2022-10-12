@@ -79,6 +79,18 @@ public class LogicProcessor {
         return false;
     }
 
+    private void deleteLastCharacter() {
+        if (!numberBuilder.isEmpty()) {
+            numberBuilder.deleteCharAt(numberBuilder.length() - 1);
+            return;
+        }
+
+        String lastElement = operationStack.isEmpty() ? "" : operationStack.pollLast();
+        if (!lastElement.isEmpty() && !isOperator(lastElement)) {
+            numberBuilder.append(lastElement, 0, lastElement.length() - 1);
+        }
+    }
+
     private void addSquareRoot() {
         addOperator(ButtonType.SQUARE_ROOT);
         addParentheses();
@@ -179,18 +191,6 @@ public class LogicProcessor {
 
     private boolean isOperator(String text) {
         return text.length() == 1 && !text.matches("^(\\d|\\(|\\))");
-    }
-
-    private void deleteLastCharacter() {
-        if (!numberBuilder.isEmpty()) {
-            numberBuilder.deleteCharAt(numberBuilder.length() - 1);
-            return;
-        }
-
-        String lastElement = operationStack.isEmpty() ? "" : operationStack.pollLast();
-        if (!lastElement.isEmpty() && !isOperator(lastElement)) {
-            numberBuilder.append(lastElement, 0, lastElement.length() - 1);
-        }
     }
 
     private void setEquationScreenFromStack() {

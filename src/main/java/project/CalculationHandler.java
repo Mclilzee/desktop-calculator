@@ -57,7 +57,8 @@ public final class CalculationHandler {
         ButtonType type = getButtonType(element);
 
         while (!operators.isEmpty()) {
-            if (type.PRECEDENCE <= getButtonType(operators.peek()).PRECEDENCE) {
+            ButtonType previousType = getButtonType(operators.peek());
+            if (type.PRECEDENCE <= previousType.PRECEDENCE && previousType != ButtonType.OPEN_PARENTHESES) {
                 performCalculation();
             } else {
                 break;
