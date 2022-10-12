@@ -84,7 +84,7 @@ public class LogicProcessor {
     }
 
     private boolean validInput() {
-        return !operationStack.isEmpty() && !endsWithOperator() && !hasZeroDivision();
+        return !operationStack.isEmpty() && !endsWithOperator() && !endsWithParentheses() && !hasZeroDivision();
     }
 
     private boolean endsWithOperator() {

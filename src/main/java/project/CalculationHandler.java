@@ -55,7 +55,7 @@ public final class CalculationHandler {
     }
 
     private static void performOperatorInsertion(String element) {
-        if (postfixStack.size() < 2) {
+        if (postfixStack.isEmpty()) {
             operators.push(element);
         } else {
             performPrecedenceInsertion(element);
