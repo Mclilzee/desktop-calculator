@@ -21,17 +21,28 @@ public final class CalculationHandler {
             String element = operationStack.pop();
             if (isNumber(element)) {
                 postfixStack.push(new BigDecimal(element));
+            } else if (element.equals(ButtonType.CLOSED_PARENTHESES.VALUE)) {
+                emptyStack();
             } else {
                 performOperatorInsertion(element);
             }
         }
 
-        while (!operators.isEmpty()) {
-            performCalculation();
-        }
+        emptyStack();
 
         operationStack.add(postfixStack.pop().toPlainString());
         resultLabel.setText(operationStack.peek());
+    }
+
+    private static void emptyStack() {
+        while (!operators.isEmpty()) {
+            if (operators.peek().equals(ButtonType.OPEN_PARENTHESES.VALUE)) {
+                operators.pop();
+                break;
+            }
+
+            performCalculation();
+        }
     }
 
     private static void performOperatorInsertion(String element) {

@@ -34,14 +34,14 @@ public class LogicProcessor {
             case CLEAR_ENTRY -> numberBuilder.setLength(0);
             case DELETE -> deleteLastCharacter();
             case EQUALS -> performEquation();
-            case PARENTHESES -> insertParentheses();
-            case SQUARE_ROOT -> insertSquareRoot();
+            case PARENTHESES -> addParentheses();
+            case SQUARE_ROOT -> addSquareRoot();
             case POWER_TWO -> {
-                insertPower();
+                addPower();
                 addNumber(ButtonType.TWO);
-                insertParentheses();
+                addParentheses();
             }
-            case POWER_Y -> insertPower();
+            case POWER_Y -> addPower();
             case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
             default -> addNumber(type);
         }
@@ -52,9 +52,8 @@ public class LogicProcessor {
     }
 
     private void performEquation() {
+        addValidNumberBuilder();
         if (validInput()) {
-            operationStack.add(getValidNumberBuilder());
-            numberBuilder.setLength(0);
             CalculationHandler.displayResult(operationStack, resultScreen);
         } else {
             equationScreen.setForeground(Color.RED.darker());
@@ -62,25 +61,17 @@ public class LogicProcessor {
     }
 
     private boolean validInput() {
-        if (operationStack.isEmpty() && !numberBuilder.isEmpty()) {
-            return true;
-        }
-
-        return !endsWithOperator() && !hasZeroDivision();
+        return !operationStack.isEmpty() && !endsWithOperator() && !hasZeroDivision();
     }
 
     private boolean endsWithOperator() {
-        return !operationStack.isEmpty() && isOperator(operationStack.peekLast()) && numberBuilder.isEmpty();
+        return !operationStack.isEmpty() && isOperator(operationStack.peekLast());
     }
 
     private boolean hasZeroDivision() {
         String[] elements = operationStack.toArray(new String[0]);
-        if (elements[elements.length - 1].equals(ButtonType.DIVIDE.VALUE) && numberBuilder.toString().equals("0")) {
-            return true;
-        }
-
-        for (int i = 1; i < elements.length - 1; i++) {
-            if (elements[i - 1].equals(ButtonType.DIVIDE.VALUE) && elements[i].equals("0")) {
+        for (int i = 0; i < elements.length - 1; i++) {
+            if (elements[i].equals(ButtonType.DIVIDE.VALUE) && elements[i + 1].equals("0")) {
                 return true;
             }
         }
@@ -88,28 +79,27 @@ public class LogicProcessor {
         return false;
     }
 
-    private void insertSquareRoot() {
+    private void addSquareRoot() {
         addOperator(ButtonType.SQUARE_ROOT);
-        insertParentheses();
+        addParentheses();
     }
 
-    private void insertPower() {
+    private void addPower() {
         addOperator(ButtonType.POWER);
-        insertParentheses();
+        addParentheses();
     }
 
-    private void insertParentheses() {
+    private void addParentheses() {
+        addValidNumberBuilder();
         if (hasBalancedParentheses() || endsWithParentheses() || endsWithOperator()) {
             operationStack.add(ButtonType.OPEN_PARENTHESES.VALUE);
         } else {
-            operationStack.add(numberBuilder.toString());
             operationStack.add(ButtonType.CLOSED_PARENTHESES.VALUE);
-            numberBuilder.setLength(0);
         }
     }
 
     private boolean endsWithParentheses() {
-        if (!numberBuilder.isEmpty() || operationStack.isEmpty()) {
+        if (operationStack.isEmpty()) {
             return false;
         }
         return operationStack.peekLast().equals(ButtonType.OPEN_PARENTHESES.VALUE);
@@ -159,26 +149,22 @@ public class LogicProcessor {
     }
 
     private void addOperator(ButtonType type) {
-        if (operationStack.isEmpty() && numberBuilder.isEmpty()) {
+        addValidNumberBuilder();
+        if (operationStack.isEmpty()) {
             return;
         }
-
         if (endsWithOperator()) {
             operationStack.pollLast();
         }
 
-        insertOperator(type.VALUE);
+        operationStack.add(type.VALUE);
     }
 
-    private void insertOperator(String operator) {
-        if (!numberBuilder.isEmpty()) {
-            operationStack.add(getValidNumberBuilder());
-            numberBuilder.setLength(0);
+    private void addValidNumberBuilder() {
+        if (numberBuilder.isEmpty()) {
+            return;
         }
-        operationStack.add(operator);
-    }
 
-    private String getValidNumberBuilder() {
         if (numberBuilder.toString().startsWith(".")) {
             numberBuilder.replace(0, 1, "0.");
         }
@@ -187,7 +173,8 @@ public class LogicProcessor {
             numberBuilder.replace(numberBuilder.length() - 1, numberBuilder.length(), ".0");
         }
 
-        return numberBuilder.toString();
+        operationStack.add(numberBuilder.toString());
+        numberBuilder.setLength(0);
     }
 
     private boolean isOperator(String text) {
