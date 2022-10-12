@@ -66,7 +66,7 @@ public class LogicProcessor {
 
     private boolean hasZeroDivision() {
         String[] elements = operationStack.toArray(new String[0]);
-        if (elements[elements.length - 1].equals("0") && numberBuilder.toString().equals("0")) {
+        if (elements[elements.length - 1].equals(ButtonType.DIVIDE.VALUE) && numberBuilder.toString().equals("0")) {
             return true;
         }
 
