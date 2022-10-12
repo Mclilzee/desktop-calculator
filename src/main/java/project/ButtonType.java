@@ -1,6 +1,22 @@
 package project;
 
 public enum ButtonType {
+    ADD("\u002B", 1),
+    SUBTRACT("\u2212", 1),
+    MULTIPLY("\u00D7", 2),
+    DIVIDE("\u00F7", 2),
+    SQUARE_ROOT("\u221A", 3),
+    POWER("^", 3),
+    OPEN_PARENTHESES("(", 4),
+    CLOSED_PARENTHESES(")", 4),
+    POWER_TWO("\u03C7" + "\u00B2"),
+    POWER_Y("\u03C7" + "\u02B8"),
+    PLUS_MINUS("\u00B1"),
+    PARENTHESES(OPEN_PARENTHESES.VALUE + " " + CLOSED_PARENTHESES.VALUE),
+    CLEAR("C"),
+    CLEAR_ENTRY("CE"),
+    DELETE("Del"),
+    EQUALS("="),
     ONE("1"),
     TWO("2"),
     THREE("3"),
@@ -11,23 +27,8 @@ public enum ButtonType {
     EIGHT("8"),
     NINE("9"),
     ZERO("0"),
-    DOT("."),
-    ADD("\u002B", 1),
-    SUBTRACT("\u2212", 1),
-    MULTIPLY("\u00D7", 2),
-    DIVIDE("\u00F7", 2),
-    EQUALS("="),
-    CLEAR("C"),
-    CLEAR_ENTRY("CE"),
-    DELETE("Del"),
-    SQUARE_ROOT("\u221A", 3),
-    POWER("^", 3),
-    POWER_TWO("\u03C7" + "\u00B2"),
-    POWER_Y("\u03C7" + "\u02B8"),
-    PLUS_MINUS("\u00B1"),
-    OPEN_PARENTHESES("(", 4),
-    CLOSED_PARENTHESES(")", 4),
-    PARENTHESES(OPEN_PARENTHESES.VALUE + " " + CLOSED_PARENTHESES.VALUE);
+    DOT(".");
+
 
     public final String VALUE;
 

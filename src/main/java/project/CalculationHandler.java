@@ -1,12 +1,12 @@
 package project;
 
 import javax.swing.*;
-import java.awt.*;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public final class CalculationHandler {
 

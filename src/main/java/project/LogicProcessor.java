@@ -38,7 +38,7 @@ public class LogicProcessor {
             case CLEAR -> clearScreen();
             case CLEAR_ENTRY -> numberBuilder.setLength(0);
             case DELETE -> deleteLastCharacter();
-            case EQUALS -> performEquation();
+            case EQUALS -> handleEquation();
             case PARENTHESES -> addParentheses();
             case SQUARE_ROOT -> addSquareRoot();
             case POWER_TWO -> addPowerOfTwo();
@@ -54,16 +54,16 @@ public class LogicProcessor {
         operationStack.clear();
     }
 
-    private void performEquation() {
+    private void handleEquation() {
         addValidNumberBuilder();
         if (validInput()) {
-            handleEquation();
+            performEquation();
         } else {
             equationScreen.setForeground(Color.RED.darker());
         }
     }
 
-    private void handleEquation() {
+    private void performEquation() {
         try {
             CalculationHandler.displayResult(operationStack, resultScreen);
         } catch (NoSuchElementException | ArithmeticException | IndexOutOfBoundsException e) {
