@@ -23,4 +23,8 @@ public class Calculator extends JFrame {
         add(panel);
         setVisible(true);
     }
+
+    public Calculator() {
+        this("Calculator");
+    }
 }
