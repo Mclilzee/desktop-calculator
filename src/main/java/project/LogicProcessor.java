@@ -235,8 +235,9 @@ public class LogicProcessor {
     private void insertNumber(String value) {
         if (numberBuilder.length() == 1 && numberBuilder.charAt(0) == '0') {
             numberBuilder.deleteCharAt(0);
+        } else if (operationStack.size() == 1 && operationStack.peek().matches("^\\d.*")) {
+            return;
         }
-
         numberBuilder.append(value);
     }
 
