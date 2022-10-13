@@ -11,6 +11,7 @@ public class Calculator extends JFrame {
         setSize(400, 500);
         setResizable(false);
         setLocationRelativeTo(null);
+        setFocusable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
@@ -20,7 +21,10 @@ public class Calculator extends JFrame {
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         CalculatorScreen screen = new CalculatorScreen();
         panel.add(screen);
-        panel.add(new CalculatorButtonsPanel(screen));
+
+        CalculatorButtonsPanel buttonsPanel = new CalculatorButtonsPanel(screen);
+        panel.add(buttonsPanel);
+        addKeyListener(buttonsPanel.getListener());
 
         add(panel);
         setVisible(true);
