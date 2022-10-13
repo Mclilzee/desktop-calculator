@@ -81,13 +81,26 @@ public final class CalculationHandler {
         ButtonType operatorType = getButtonType(operators.pop());
 
         switch (operatorType) {
-            case ADD -> performAddition();
-            case SUBTRACT -> performSubtraction();
-            case MULTIPLY -> performMultiplication();
-            case DIVIDE -> performDivision();
-            case POWER -> performExponentiation();
-            case SQUARE_ROOT -> performSquareRootOperation();
-            default -> throw new IllegalArgumentException();
+            case ADD:
+                performAddition();
+                break;
+            case SUBTRACT:
+                performSubtraction();
+                break;
+            case MULTIPLY:
+                performMultiplication();
+                break;
+            case DIVIDE:
+                performDivision();
+                break;
+            case POWER:
+                performExponentiation();
+                break;
+            case SQUARE_ROOT:
+                performSquareRootOperation();
+                break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 

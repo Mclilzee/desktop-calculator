@@ -34,17 +34,42 @@ public class LogicProcessor {
 
     private void performAction(ButtonType type) {
         switch (type) {
-            case CLEAR -> clearScreen();
-            case CLEAR_ENTRY -> numberBuilder.setLength(0);
-            case DELETE -> deleteLastCharacter();
-            case EQUALS -> handleEquation();
-            case PLUS_MINUS -> negateNumber();
-            case PARENTHESES -> addParentheses();
-            case SQUARE_ROOT -> addSquareRoot();
-            case POWER_TWO -> addPowerOfTwo();
-            case POWER_Y -> addPower();
-            case ADD, MULTIPLY, DIVIDE, SUBTRACT -> addOperator(type);
-            default -> addNumber(type);
+            case CLEAR:
+                clearScreen();
+                break;
+            case CLEAR_ENTRY:
+                numberBuilder.setLength(0);
+                break;
+            case DELETE:
+                deleteLastCharacter();
+                break;
+            case EQUALS:
+                handleEquation();
+                break;
+            case PLUS_MINUS:
+                negateNumber();
+                break;
+            case PARENTHESES:
+                addParentheses();
+                break;
+            case SQUARE_ROOT:
+                addSquareRoot();
+                break;
+            case POWER_TWO:
+                addPowerOfTwo();
+                break;
+            case POWER_Y:
+                addPower();
+                break;
+            case ADD:
+            case MULTIPLY:
+            case DIVIDE:
+            case SUBTRACT:
+                addOperator(type);
+                break;
+            default:
+                addNumber(type);
+                break;
         }
     }
 
@@ -103,7 +128,7 @@ public class LogicProcessor {
     }
 
     private void deleteLastCharacter() {
-        if (!numberBuilder.isEmpty()) {
+        if (numberBuilder.length() > 0) {
             numberBuilder.deleteCharAt(numberBuilder.length() - 1);
             return;
         }
@@ -248,7 +273,7 @@ public class LogicProcessor {
     }
 
     private void addDot() {
-        if (numberBuilder.isEmpty() || !numberBuilder.toString().contains(".")) {
+        if (numberBuilder.length() == 0 || !numberBuilder.toString().contains(".")) {
             numberBuilder.append(".");
         }
     }
@@ -266,7 +291,7 @@ public class LogicProcessor {
     }
 
     private void addValidNumberBuilder() {
-        if (numberBuilder.isEmpty()) {
+        if (numberBuilder.length() == 0) {
             return;
         }
 

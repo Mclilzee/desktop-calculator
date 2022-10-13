@@ -97,17 +97,40 @@ public class CalculatorButtonsPanel extends JPanel {
 
         private void clickButton(char type) {
             switch (type) {
-                case '.' -> buttonsMap.get(".").doClick();
-                case '*' -> buttonsMap.get("*").doClick();
-                case '/' -> buttonsMap.get("/").doClick();
-                case '+' -> buttonsMap.get("+").doClick();
-                case '-' -> buttonsMap.get("-").doClick();
-                case '\u001B' -> buttonsMap.get("CE").doClick();
-                case '(', ')' -> buttonsMap.get("(").doClick();
-                case '^' -> buttonsMap.get("^").doClick();
-                case '\b' -> buttonsMap.get("Delete").doClick();
-                case '\n' -> buttonsMap.get("=").doClick();
-                default -> clickNumber(type);
+                case '.':
+                    buttonsMap.get(".").doClick();
+                    break;
+                case '*':
+                    buttonsMap.get("*").doClick();
+                    break;
+                case '/':
+                    buttonsMap.get("/").doClick();
+                    break;
+                case '+':
+                    buttonsMap.get("+").doClick();
+                    break;
+                case '-':
+                    buttonsMap.get("-").doClick();
+                    break;
+                case '\u001B':
+                    buttonsMap.get("CE").doClick();
+                    break;
+                case '(':
+                case ')':
+                    buttonsMap.get("(").doClick();
+                    break;
+                case '^':
+                    buttonsMap.get("^").doClick();
+                    break;
+                case '\b':
+                    buttonsMap.get("Delete").doClick();
+                    break;
+                case '\n':
+                    buttonsMap.get("=").doClick();
+                    break;
+                default:
+                    clickNumber(type);
+                    break;
             }
         }
 
