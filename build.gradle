@@ -1,9 +1,9 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
 group 'project'
-version ''
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -16,14 +16,6 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    manifest {
-        attributes("Main-Class": "project.Main")
-    }
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
+application {
+    mainClass = "project.Main"
 }
