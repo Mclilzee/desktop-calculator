@@ -14,4 +14,6 @@ This application is GUI based and requires a window manager to be able to displa
 After running the application, use the calculator as you would usually do with any other calculator! encapsulate calculations in brackets to be able to calculate complex numbers.
 
 # Examples
-
+- <img src="./example1.gif" alt="calculating 2*(5+5)-2" />
+- <img src="./example2.gif" alt="calculating -56 * 2" />
+- <img src="./example3.gif" alt="calculating 2^2+2" />
